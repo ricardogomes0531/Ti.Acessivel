@@ -1,0 +1,31 @@
+﻿@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	}
+<section>
+	<div class="row">
+		<div class="col-lg-1">
+			<h1>Esqueci Minha Senha</h1>
+		</div>
+		<div class="col-lg-11">
+			<<blockquote>
+Você deverá informar seu e-mail para receber por ele a sua senha.
+</blockquote>
+</div>
+<form id="formSenha" action="RecuperarSenha" method="post">
+<div class="row">
+<div class="col-md-6">
+<div class="form-group">
+<label for="mail">E-mail:</label>
+<input type="text" id="email" name="email" required>
+</div>
+<div class="form-group">
+<input class="btn" type="submit" id="btnEnviar" value="Enviar">
+</div>
+</div>
+</form>
+		</div>
+</section>
+		<hr>
+<div id="alerta" class="alert alert-success" role="alert">
+</div>
+    <script src="~/Scripts/cadastro/Cadastro.js"></script>

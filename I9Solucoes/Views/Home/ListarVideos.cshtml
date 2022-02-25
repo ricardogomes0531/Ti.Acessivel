@@ -1,0 +1,23 @@
+﻿@model List<I9Solucoes.Models.CanalYoutube>
+<section>
+	<div class="row">
+		<div class="col-lg-3">
+			<h2>Vídeos do Canal TI Acessível no Youtube</h2>
+		</div>
+		<div class="col-lg-8">
+			@if (Model.Count() > 0)
+			{
+				foreach (var canal in Model.ToList())
+				{
+<h3><a href="@canal.Link" target="_blank">@canal.Titulo</a></h3>					
+			<p class="text-lead">@canal.Descricao</p>
+							}
+			}
+			else
+			{
+				<p class="text-lead">Nenhum vídeo para mostrar</p>
+			}
+		</div>
+	</div>
+</section>
+<hr>

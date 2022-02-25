@@ -1,0 +1,63 @@
+﻿@model List<I9Solucoes.Models.CursoAluno>
+@{
+    Layout = "~/Views/Shared/_LayoutEspecifico.cshtml";
+}
+<section>
+    <div class="row">
+        <div class="col-lg-3">
+            <h1>Meus Cursos</h1>
+        </div>
+        <div class="col-lg-8">
+            @if (Model.Count() > 0)
+            {
+                foreach (var cursos in Model.ToList())
+                {
+                    <p class="text-lead">
+                        <b>Nome do curso: @cursos.NomeCurso</b>
+                        <br />
+                        <b>Início em: @cursos.DataInicio.ToString("dd/MM/yyyy")</b>
+                        <br />
+                        <b>Matrícula realizada em: @cursos.DataCadastro.ToString("dd/MM/yyyy")</b>
+                        <br>
+                        <b>Data de encerramento: @cursos.DataFim.ToString("dd/MM/yyyy")</b>
+                        <br />
+                        @if (cursos.Liberado == "s")
+                        {
+                            <b>Liberado: Sim</b>
+                        }
+                        else
+                        {
+                            <b>Liberado: Não</b>
+                            <a href="@cursos.LinkPagamento" target="_blank">Você pode pagar o curso clicando aqui</a>
+                            <br>
+                            <b>Você irá pagar, conforme a assinatura escolhida, o valor de R$@cursos.Valor</b>
+                            <br>
+                        <p>OBS: Depois que fizer o pagamento, favor enviar o comprovante para o Whatsapp: @ViewBag.envioComprovante e em até 24 horas o curso será liberado no sistema e você será notificado.</p>
+                        <b>OBS: Você será redirecionado para outro site para efetivar o pagamento. Este site será o Mercado Pago, com conexão segura, assim sendo, pode ficar tranquilo(a) com seu pagamento.</b>
+                        <br>
+                    }
+                        @if (DateTime.Now < cursos.DataFim && DateTime.Now > cursos.DataInicio && cursos.Liberado == "s")
+                        {
+                            <a href="/Curso/?idCurso=@cursos.IdCurso">Ir para o curso</a>
+                        }
+                        @if (DateTime.Now < cursos.DataInicio)
+                        {
+                            <p class="text-lead">O curso ainda não iniciou. A data de início é @cursos.DataInicio.ToString("dd/mm/yyyy")</p>
+                        }
+                        @if (DateTime.Now > cursos.DataFim)
+                        {
+                            <p class="text-lead">O curso encerrou em @cursos.DataFim.ToString("dd/MM/yyyy")</p>
+                        }
+
+                        </p>
+                    }
+                }
+                else
+                {
+                    <p class="text-lead">Você ainda não está inscrito em nenhum curso.</p>
+                    <a href="/curso/todososcursos">Ver Todos os cursos disponíveis</a>
+                }
+        </div>
+    </div>
+</section>
+<hr>

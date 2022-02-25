@@ -1,0 +1,21 @@
+﻿@model I9Solucoes.Models.PerfilUsuario
+@{
+	Layout = "~/Views/Shared/_LayoutEspecifico.cshtml";
+}
+<section>
+	<div class="row">
+		<div class="col-lg-3">
+			<h1>Meus Dados</h1>
+		</div>
+		<div class="col-lg-8">
+			<p class="text-lead">
+				<b>Nome:@Model.Nome</b>
+				<br />
+				<b>E-mail:@Model.Email</b>
+				<br />
+				<b>Total de cursos:@Model.TotalDeCursos</b>
+							</p>
+		</div>
+	</div>
+</section>
+<hr>

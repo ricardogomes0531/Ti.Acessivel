@@ -1,0 +1,42 @@
+﻿@model List<I9Solucoes.Models.Aulas>
+@{
+	Layout = "~/Views/Shared/_LayoutEspecifico.cshtml";
+}
+<section>
+<div class="row">
+	<div class="col-lg-3">
+		<h1>Aulas</h1>
+	</div>
+	<div class="col-lg-8">
+		@if (Model.Count() > 0)
+		{
+			<ul class="list-group"></ul>
+			foreach (var aulas in Model.ToList())
+			{
+				if (string.IsNullOrEmpty(aulas.CaminhoArquivo))
+				{
+					<li class="list-group-item"><a class="btn-link" href="/Curso/AssistirAula/?idModulo=@aulas.IdModulo&idCurso=@aulas.IdCurso&idAula=@aulas.Id">@aulas.Nome</a></li>
+					if (aulas.Frequencia > 0)
+					{
+						<b>Assistida</b>
+					}
+				}
+				else
+				{
+					<li class="list-group-item"><a class="btn-link" href="/Curso/AssistirAulaMp3/?idModulo=@aulas.IdModulo&idCurso=@aulas.IdCurso&idAula=@aulas.Id">@aulas.Nome</a></li>
+					if (aulas.Frequencia > 0)
+					{
+						<b>Assistida</b>
+					}
+				}
+			}
+		}
+		</ul>
+		@if (Model.Count() == 0)
+		{
+			<p class="text-lead">Não existem aulas para mostrar neste módulo</p>
+		}
+	</div>
+</div>
+</section>
+<hr>

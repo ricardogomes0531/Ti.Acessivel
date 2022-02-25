@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TI Acessível</title>
+    @Styles.Render("~/Content/css")
+    <link rel="stylesheet" href="~/Vendor/sweetalert/css/sweetalert.css">
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/toastr/toastr.min.js"></script>
+    <script src="~/Vendor/sweetalert/js/sweetalert.min.js"></script>
+    <script src="~/Scripts/global.js"></script>
+    <script src="~/Scripts/Home/Validacao.js"></script>
+
+</head>
+<body>
+<div class="container">
+<div class="row">
+<div class="col-lg-4">
+		<h1>Entre para Acessar Seus Cursos ou se Inscrever em um Novo</h1>
+</div>
+<div class="col-lg-4">
+<p>Não tem cadastro em nossa plataforma?
+<a class="btn-link" href="/cadastro/index">Clique aqui para se Cadastrar</a>
+<br>
+<a class="btn-link" href="/home/redefinirsenha">Esqueci minha senha</a>
+</div>
+<div class="col-lg-4">
+		<form name="formLogin" id="formLogin" class="form-inline">
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="form-group">
+						<label class="label-control" for="email">E-mail</label>
+						<input class="form-control" type="email" name="email" id="email">
+					</div>
+				</div>
+
+				<div class="col-lg-6">
+					<div class="form-group">
+						<label class="label-control" for="senha">Senha</label>
+						<input class="form-control" type="password" name="senha" id="senha">
+					</div>
+				</div>
+				<input type="button" id="btnEntrar" value="Ok" onclick="validarLogin()" />
+
+			</div>
+		</form>
+	</div>
+</div>
+</div>
+</body>
+</html>

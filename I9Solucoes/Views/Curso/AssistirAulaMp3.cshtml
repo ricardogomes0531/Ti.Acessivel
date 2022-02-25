@@ -1,0 +1,18 @@
+﻿@{
+	Layout = "~/Views/Shared/_LayoutEspecifico.cshtml";
+}
+<section>
+	<div class="row">
+		<div class="col-lg-3">
+			<h1>@ViewBag.tituloAula - Player da Aula</h1>
+		</div>
+		<div class="col-lg-8">
+			<audio autoplay="autoplay" controls="controls" src="~/Content/@ViewBag.caminhoArquivo" type="audio/mp3">
+
+			</audio>
+<br>
+<a href="javascript:window.history.go(-1)">Voltar</a>
+		</div>
+	</div>
+</section>
+<hr>

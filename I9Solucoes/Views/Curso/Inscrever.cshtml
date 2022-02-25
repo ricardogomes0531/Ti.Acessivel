@@ -1,0 +1,46 @@
+﻿@{
+	Layout = "~/Views/Shared/_LayoutEspecifico.cshtml";
+	}
+<section>
+	<div class="row">
+		<div class="col-lg-3">
+			<h1>Inscrição</h1>
+		</div>
+		<div class="col-lg-8">
+			<p class="text-lead">
+Você está prestes a se inscrever no curso.<br>
+Este curso terá o valor total de R$ @ViewBag.valorMonetario, e será pago de forma mensal, todo dia 08.<br>
+Após sua inscrição no curso, lhe será apresentado um link de pagamento, o qual direcionarar-lhe para uma outra página, onde você deverá escolher como deseja pagar.<br>
+Após o pagamento ser realizado, favor enviar um e-mail ou uma mensagem no Whatsapp com o comprovante de pagamento anexado, que em até 24 horas o curso será liberado para você. Você
+será avisado por e-mail e/ou Whatsapp sobre a liberação do curso.
+<br>
+Vale ressaltar que o curso tem uma data para ser iniciado, que neste caso será dia @ViewBag.dataInicial. Assim sendo, apesar do curso está liberado para você por causa do pagamento, você só conseguirá assisti-lo a partir da data de início.
+							</p>
+</div>
+		</div>
+<div class="row">
+<div id="inscricao">
+<form id="formInscricaoCurso">
+<input type="hidden" id="idCurso" name="idCurso" value="@ViewBag.idCurso">
+<div class="form-group">
+<label for="tipoAssinatura">Selecione o tempo de assinatura para este curso</label>
+<select id="tempoAssinatura" name="tempoAssinatura">
+<option value="">Selecione...</option>
+	@foreach (var tempo in ViewBag.tempoCobranca)
+	{
+<option value="@tempo.Id">@tempo.Tempo meses por R$ @tempo.Valor mensal</option>
+	}
+</select>
+</div>
+<div class="form-group">
+<input id="botaoInscrever" type="button" value="Realizar inscrição" onClick="inscrever()">
+</div>
+</form>
+</div>
+</div>
+</section>
+<div id="alerta" class="alert alert-success" role="alert">
+</div>
+
+		<hr>
+    <script src="~/Scripts/Curso/Curso.js"></script>

@@ -1,0 +1,27 @@
+﻿@model List<I9Solucoes.Models.Modulos>
+@{
+	Layout = "~/Views/Shared/_LayoutEspecifico.cshtml";
+}
+<section>
+<div class="row">
+	<div class="col-lg-3">
+		<h1>Modulos do Curso</h1>
+	</div>
+	<div class="col-lg-8">
+		@if (Model.Count() > 0)
+		{
+			<ul class="list-group"></ul>
+			foreach (var modulos in Model.ToList())
+			{
+				<li class="list-group-item"><a class="btn-link" href="/Curso/ListarAulas/?idModulo=@modulos.Id&idCurso=@modulos.IdCurso">@modulos.Nome</a></li>
+								}
+		}
+			</ul>
+		@if (Model.Count()==0)
+		{
+			<p class="text-lead">Não existem módulos para mostrar neste curso</p>
+		}
+	</div>
+</div>
+</section>
+<hr>

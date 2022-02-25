@@ -1,0 +1,39 @@
+﻿@model I9Solucoes.Models.Curso
+@{
+	Layout = "~/Views/Shared/_LayoutEspecifico.cshtml";
+	}
+<section>
+	<div class="row">
+		<div class="col-lg-3">
+			<h1>Detalhes do Curso</h1>
+		</div>
+		<div class="col-lg-8">
+			<p class="text-lead">
+				<b>Nome do curso: @Model.Nome</b>
+				<br />
+				<b>Data de início: @Model.DataInicio.ToString("dd/MM/yyyy")</b>
+				<br />
+				<b>Explicação: <pre>@Model.Explicacao </pre></b>
+				<br />
+				<b>Custo: R$ @Model.ValorMonetario</b>
+				<br />
+				<b>Tempo de duração: @Model.TempoPrevistoDuracao meses</b>
+							</p>
+</div>
+		</div>
+<div class="row">
+			@if (Model.AceitaMatricula)
+		{
+					<h1>Para realizar sua inscrição no curso, por favor clique no link a seguir</h1>
+			<a class="btn-link" href="/curso/inscrever?idCUrso=@Model.Id">Realizar inscrição no curso</a>
+				}
+			else
+		{
+		<p>No momento, este curso não encontra-se com matrículas abertas. Por favor volte em breve, ou entre em contato com o e-mail:
+	<a href="mailto:programadorricardooliveira@gmail.com">programadorricardooliveira@gmail.com</a>
+	</p>
+	}
+		
+</div>
+</section>
+		<hr>
