@@ -185,10 +185,11 @@ new CursoRepository().RemoverFrequencia(idCurso, idModulo, idAula, idAluno);
             HttpCookie idCursoCookie = Request.Cookies["idCursoCookie"];
             
             var idAluno = new UsuarioRepository().PesquisarIdDoAlunoPeloEmail(cookieLogin.Value.ToString());
-            Erro erro = new Erro();
+                        Erro erro = new Erro();
             try
             {
                 var idCurso = Convert.ToInt32(idCursoCookie.Value.ToString());
+                ViewBag.idCurso = idCurso;
                 var ativarCurso = new CursoRepository().AtivarCurso(idCurso, idAluno);
                 if (ativarCurso)
                 {
