@@ -117,7 +117,8 @@ new CursoRepository().RemoverFrequencia(idCurso, idModulo, idAula, idAluno);
             var idAluno = new UsuarioRepository().PesquisarIdDoAlunoPeloEmail(cookieLogin.Value.ToString());
             var idTempoAssinatura=Convert.ToInt32(Request.Form["tempoAssinatura"]);
             int tempo= new CursoRepository().BuscarTempoDoCurso(idTempoAssinatura, idCurso);
-            DateTime dataInicio = new CursoRepository().Buscar(idCurso).DataInicio;
+            //DateTime dataInicio = new CursoRepository().Buscar(idCurso).DataInicio;
+            DateTime dataInicio = DateTime.Now.Date;
             var dataFim=dataInicio.AddMonths(tempo);
             Erro erro = new Erro();
             try
@@ -194,7 +195,7 @@ new CursoRepository().RemoverFrequencia(idCurso, idModulo, idAula, idAluno);
                 if (ativarCurso)
                 {
                     erro.ExisteErro = false;
-                    erro.Mensagem ="O curso foi ativado com sucesso!";
+                    erro.Mensagem ="O pagamento do curso foi realizado com sucesso. O curso acabou de ser ativado para você!";
                 }
                 else
                 {

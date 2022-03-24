@@ -11,7 +11,10 @@
             <p class="text-lead">
                 <b>@Model.Mensagem</b>
                 <br />
+                @if (!Model.ExisteErro)
+                {
                 <a href="/Curso/?idCurso=@ViewBag.idCurso">Ir para o curso</a>
+                }
             </p>
                     </div>
     </div>
