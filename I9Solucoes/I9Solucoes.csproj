@@ -131,6 +131,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Mail.cs" />
+    <Compile Include="Models\AtividadeCurso.cs" />
     <Compile Include="Models\Aulas.cs" />
     <Compile Include="Models\CanalYoutube.cs" />
     <Compile Include="Models\Curso.cs" />
@@ -143,6 +144,7 @@
     <Compile Include="Models\Publicacao.cs" />
     <Compile Include="Models\TempoCobrancaCurso.cs" />
     <Compile Include="Models\Usuario.cs" />
+    <Compile Include="Models\UsuarioAtividade.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositorios\CadastroRepository.cs" />
     <Compile Include="Repositorios\CanalYoutube.cs" />

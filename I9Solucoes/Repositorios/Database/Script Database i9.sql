@@ -52,7 +52,7 @@ create table CapturaLead(Id int identity primary key, email varchar(50) not null
 create table log(Id int identity primary key, Erro varchar(max), Detalhe varchar(max))
 
 	IF OBJECT_ID('dbo.AtividadeCurso') is null
-create table AtividadeCurso(IdAtividade int identity primary key, IdCurso int not null, IdModulo int not null)
+create table AtividadeCurso(IdAtividade int identity primary key, IdCurso int not null, IdModulo int not null, IdModuloBloqueado int not null, Titulo varchar(150) not null, Descricao varchar(max))
 
 	IF OBJECT_ID('dbo.UsuarioAtividadeCurso') is null
-create table UsuarioAtividadeCurso(Id int identity primary key, IdAtividade int not null, IdUsuario int not null, SnConcluida char(1) not null)
+create table UsuarioAtividadeCurso(Id int identity primary key, IdUsuario int not null, IdModuloBloqueado int not null)

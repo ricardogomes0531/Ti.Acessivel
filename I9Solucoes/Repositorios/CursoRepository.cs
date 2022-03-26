@@ -774,5 +774,111 @@ LinkPagamento=dados.GetString(dados.GetOrdinal("LinkPagamento")),
 
 			return resultado;
 		}
+
+		public AtividadeCurso GetAtividadeOrigem(int idCurso, int idModulo)
+        {
+			AtividadeCurso atividade = new AtividadeCurso();
+			SqlCommand query = new SqlCommand("select * from dbo.atividadecurso where idcurso=@idcurso and idmodulo=@idmodulo", _conexao);
+			_conexao.Open();
+			SqlParameter parametroIdModulo = new SqlParameter
+			{
+				ParameterName = "idModulo",
+				SqlDbType = SqlDbType.Int,
+				Value = idModulo
+			};
+			SqlParameter parametroIdCurso = new SqlParameter
+			{
+				ParameterName = "idCurso",
+				SqlDbType = SqlDbType.Int,
+				Value = idCurso
+			};
+
+			query.Parameters.Add(parametroIdCurso);
+			query.Parameters.Add(parametroIdModulo);
+
+			SqlDataReader dados = query.ExecuteReader();
+			if (dados.Read())
+            {
+				atividade.IdAtividade = dados.GetInt32(dados.GetOrdinal("idatividade"));
+				atividade.Titulo = dados.GetString(dados.GetOrdinal("titulo"));
+				atividade.Descricao = dados.GetString(dados.GetOrdinal("descricao"));
+				atividade.IdCurso = dados.GetInt32(dados.GetOrdinal("idcurso"));
+				atividade.IdModuloBloqueado = dados.GetInt32(dados.GetOrdinal("idmodulobloqueado"));
+            }
+			return atividade;
+            }
+
+		public AtividadeCurso GetAtividadeDestino(int idCurso, int idModulo)
+		{
+			AtividadeCurso atividade = new AtividadeCurso();
+			SqlCommand query = new SqlCommand("select * from dbo.atividadecurso where idcurso=@idcurso and idmodulobloqueado=@idmodulo", _conexao);
+			_conexao.Open();
+			SqlParameter parametroIdModulo = new SqlParameter
+			{
+				ParameterName = "idModulo",
+				SqlDbType = SqlDbType.Int,
+				Value = idModulo
+			};
+			SqlParameter parametroIdCurso = new SqlParameter
+			{
+				ParameterName = "idCurso",
+				SqlDbType = SqlDbType.Int,
+				Value = idCurso
+			};
+
+			query.Parameters.Add(parametroIdCurso);
+			query.Parameters.Add(parametroIdModulo);
+
+			SqlDataReader dados = query.ExecuteReader();
+			if (dados.Read())
+			{
+				atividade.IdAtividade = dados.GetInt32(dados.GetOrdinal("idatividade"));
+				atividade.Titulo = dados.GetString(dados.GetOrdinal("titulo"));
+				atividade.Descricao = dados.GetString(dados.GetOrdinal("descricao"));
+				atividade.IdCurso = dados.GetInt32(dados.GetOrdinal("idcurso"));
+				atividade.IdModuloBloqueado = dados.GetInt32(dados.GetOrdinal("idmodulobloqueado"));
+			}
+			return atividade;
+		}
+
+		public UsuarioAtividade GetAtividadeUsuario(int idCurso, int idModuloBloqueado, int idUsuario)
+		{
+			UsuarioAtividade atividade = new UsuarioAtividade();
+			SqlCommand query = new SqlCommand("select * from dbo.UsuarioAtividadeCurso where idcurso=@idcurso and idmodulobloqueado=@idmoduloBloqueado and idusuario=@idUsuario", _conexao);
+			_conexao.Open();
+			SqlParameter parametroIdModuloBloqueado = new SqlParameter
+			{
+				ParameterName = "idModuloBloqueado",
+				SqlDbType = SqlDbType.Int,
+				Value = idModuloBloqueado
+			};
+			SqlParameter parametroIdCurso = new SqlParameter
+			{
+				ParameterName = "idCurso",
+				SqlDbType = SqlDbType.Int,
+				Value = idCurso
+			};
+			SqlParameter parametroIdUsuario = new SqlParameter
+			{
+				ParameterName = "idUsuario",
+				SqlDbType = SqlDbType.Int,
+				Value = idUsuario
+			};
+
+			query.Parameters.Add(parametroIdCurso);
+			query.Parameters.Add(parametroIdModuloBloqueado);
+			query.Parameters.Add(parametroIdUsuario);
+
+			SqlDataReader dados = query.ExecuteReader();
+			if (dados.Read())
+			{
+				atividade.Id = dados.GetInt32(dados.GetOrdinal("id"));
+				atividade.IdModuloBloqueado = dados.GetInt32(dados.GetOrdinal("idmodulobloqueado"));
+				atividade.IdUsuario = dados.GetInt32(dados.GetOrdinal("idusuario"));
+			}
+			return atividade;
+		}
+
+
 	}
 }
