@@ -14,5 +14,7 @@ namespace I9Solucoes.Models
 		public string ConteudoAula { get; set; }
 		public string CaminhoArquivo { get; set; }
 public int Frequencia { get; set; }
+		public int TotalAtividades { get; set; }
+		public int TotalAtividadeRealizada { get; set; }
 	}
 }

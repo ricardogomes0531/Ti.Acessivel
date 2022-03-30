@@ -244,7 +244,7 @@ LinkPagamento=dados.GetString(dados.GetOrdinal("LinkPagamento")),
 		public List<Aulas> ListarAulasDoModulo(int idCurso, int idModulo, int idAluno)
 		{
 			List<Aulas> aulas = new List<Aulas>();
-			SqlCommand query = new SqlCommand("select ac.Id, ac.IdCurso, ac.IdModulo, ac.Nome, ac.ConteudoAula, ac.CaminhoArquivo, (select count(*) from aluno_frequencia f where f.idcurso=ac.idcurso and f.idmodulo=ac.idmodulo and f.idaula=ac.id and f.idaluno=@idAluno) as frequencia from aula_modulo_curso ac where ac.IdCurso=@idCurso and ac.IdModulo=@idModulo", _conexao);
+			SqlCommand query = new SqlCommand("select ac.Id, ac.IdCurso, ac.IdModulo, ac.Nome, ac.ConteudoAula, ac.CaminhoArquivo, (select count(*) from aluno_frequencia f where f.idcurso=ac.idcurso and f.idmodulo=ac.idmodulo and f.idaula=ac.id and f.idaluno=@idAluno) as frequencia, (select count(*) from AtividadeCurso at where at.IdCurso=ac.IdCurso and at.IdModuloBloqueado=ac.IdModulo)  as TotalAtividades, (select count(*) from UsuarioAtividadeCurso ua where ua.IdUsuario=@idAluno and ua.IdModuloBloqueado=ac.IdModulo) as TotalAtividadeRealizada from aula_modulo_curso ac where ac.IdCurso=@idCurso and ac.IdModulo=@idModulo", _conexao);
 			_conexao.Open();
 			SqlParameter parametroIdCurso = new SqlParameter()
 			{
@@ -279,7 +279,9 @@ LinkPagamento=dados.GetString(dados.GetOrdinal("LinkPagamento")),
 					IdCurso = dados.GetInt32(dados.GetOrdinal("IdCurso")),
 					IdModulo = dados.GetInt32(dados.GetOrdinal("IdModulo")),
 					Nome = dados.GetString(dados.GetOrdinal("Nome")),
-					 Frequencia=dados.GetInt32(dados.GetOrdinal("frequencia"))
+					 Frequencia=dados.GetInt32(dados.GetOrdinal("frequencia")),
+					  TotalAtividades = dados.GetInt32(dados.GetOrdinal("TotalAtividades")),
+					TotalAtividadeRealizada = dados.GetInt32(dados.GetOrdinal("TotalAtividadeRealizada"))
 				};
 				aulas.Add(aula);
 			};
@@ -879,6 +881,42 @@ LinkPagamento=dados.GetString(dados.GetOrdinal("LinkPagamento")),
 			return atividade;
 		}
 
+		public List<AtividadeCurso> ListarAtividades(int idCurso, int idModulo)
+        {
+			List<AtividadeCurso> atividades = new List<AtividadeCurso>();
+			SqlCommand query = new SqlCommand("select * from AtividadeCurso where idCurso=@idCurso and idModulo=@idModulo", _conexao);
+			_conexao.Open();
+			SqlParameter parametroIdCurso = new SqlParameter
+			{
+				SqlDbType = SqlDbType.Int,
+				ParameterName = "idCurso",
+				Value = idCurso
+			};
+
+			SqlParameter parametroIdModulo = new SqlParameter
+			{
+				SqlDbType = SqlDbType.Int,
+				ParameterName = "idModulo",
+				Value = idModulo
+			};
+			query.Parameters.Add(parametroIdCurso);
+			query.Parameters.Add(parametroIdModulo);
+
+			SqlDataReader dados = query.ExecuteReader();
+			while(dados.Read())
+            {
+				AtividadeCurso atividade = new AtividadeCurso
+				{
+					IdAtividade = dados.GetInt32(dados.GetOrdinal("idatividade")),
+					Descricao = dados.GetString(dados.GetOrdinal("descricao")),
+					IdCurso = dados.GetInt32(dados.GetOrdinal("idcurso")),
+					IdModulo = dados.GetInt32(dados.GetOrdinal("idmodulo")),
+					Titulo = dados.GetString(dados.GetOrdinal("titulo"))
+				};
+				atividades.Add(atividade);
+                }
+			return atividades;
+                    }
 
 	}
 }

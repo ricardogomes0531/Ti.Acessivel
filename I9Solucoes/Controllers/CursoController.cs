@@ -34,11 +34,15 @@ namespace I9Solucoes.Controllers
         public ActionResult ListarAulas(int idCurso, int idModulo)
         {
             List<Aulas> aulas = new List<Aulas>();
+            List<AtividadeCurso> atividades = new List<AtividadeCurso>();
+
             try
             {
             HttpCookie cookieLogin = Request.Cookies["login"];
             var idAluno = new UsuarioRepository().PesquisarIdDoAlunoPeloEmail(cookieLogin.Value.ToString());
             aulas = new CursoRepository().ListarAulasDoModulo(idCurso, idModulo, idAluno);
+                atividades = new CursoRepository().ListarAtividades(idCurso, idModulo);
+                ViewBag.atividades = atividades;
 }
             catch (Exception ex)
             {
