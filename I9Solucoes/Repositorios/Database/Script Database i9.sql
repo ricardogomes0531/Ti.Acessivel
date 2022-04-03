@@ -55,7 +55,7 @@ create table log(Id int identity primary key, Erro varchar(max), Detalhe varchar
 create table AtividadeCurso(IdAtividade int identity primary key, IdCurso int not null, IdModulo int not null, IdModuloBloqueado int not null, Titulo varchar(150) not null, Descricao varchar(max))
 
 	IF OBJECT_ID('dbo.UsuarioAtividadeCurso') is null
-create table UsuarioAtividadeCurso(Id int identity primary key, IdUsuario int not null, IdModuloBloqueado int not null)
+create table UsuarioAtividadeCurso(Id int identity primary key not null, IdUsuario int not null, IdModuloBloqueado int not null)
 
 alter table UsuarioAtividadeCurso add Resposta varchar(max), ComentarioProfessor varchar(max), SnConcluida char(1), Nota int, DataEnvio date
 alter table UsuarioAtividadeCurso add IdCurso int not null

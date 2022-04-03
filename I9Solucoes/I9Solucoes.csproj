@@ -237,6 +237,7 @@
     <Content Include="Views\Publicacao\Novo.cshtml" />
     <Content Include="Views\Curso\InscricaoSucesso.cshtml" />
     <Content Include="Views\Curso\Atividade.cshtml" />
+    <Content Include="Views\Curso\GravarAtividade.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

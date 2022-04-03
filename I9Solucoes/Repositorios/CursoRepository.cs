@@ -244,7 +244,7 @@ namespace I9Solucoes.Repositorios
         public List<Aulas> ListarAulasDoModulo(int idCurso, int idModulo, int idAluno)
         {
             List<Aulas> aulas = new List<Aulas>();
-            SqlCommand query = new SqlCommand("select ac.Id, ac.IdCurso, ac.IdModulo, ac.Nome, ac.ConteudoAula, ac.CaminhoArquivo, (select count(*) from aluno_frequencia f where f.idcurso=ac.idcurso and f.idmodulo=ac.idmodulo and f.idaula=ac.id and f.idaluno=@idAluno) as frequencia, (select count(*) from AtividadeCurso at where at.IdCurso=ac.IdCurso and at.IdModuloBloqueado=ac.IdModulo)  as TotalAtividades, (select count(*) from UsuarioAtividadeCurso ua where ua.IdUsuario=@idAluno and ua.IdModuloBloqueado=ac.IdModulo) as TotalAtividadeRealizada from aula_modulo_curso ac where ac.IdCurso=@idCurso and ac.IdModulo=@idModulo", _conexao);
+            SqlCommand query = new SqlCommand("select ac.Id, ac.IdCurso, ac.IdModulo, ac.Nome, ac.ConteudoAula, ac.CaminhoArquivo, (select count(*) from aluno_frequencia f where f.idcurso=ac.idcurso and f.idmodulo=ac.idmodulo and f.idaula=ac.id and f.idaluno=@idAluno) as frequencia, (select count(*) from AtividadeCurso at where at.IdCurso=ac.IdCurso and at.IdModuloBloqueado=ac.IdModulo)  as TotalAtividades, (select count(*) from UsuarioAtividadeCurso ua where ua.IdUsuario=@idAluno and ua.IdModuloBloqueado=ac.IdModulo and ua.SnConcluida='S') as TotalAtividadeRealizada from aula_modulo_curso ac where ac.IdCurso=@idCurso and ac.IdModulo=@idModulo", _conexao);
             _conexao.Open();
             SqlParameter parametroIdCurso = new SqlParameter()
             {
@@ -946,6 +946,48 @@ namespace I9Solucoes.Repositorios
                 atividade.IdModuloBloqueado = dados.GetInt32(dados.GetOrdinal("IdModuloBloqueado"));
             }
             return atividade;
+        }
+
+        public bool SalvarAtividade(int idAluno, int idCurso, int idModuloBloqueado, string resposta)
+        {
+            var status = false;
+            SqlCommand query = new SqlCommand("if (not exists(select * from dbo.UsuarioAtividadeCurso where idcurso=@idCurso and idModuloBloqueado=@idModuloBloqueado and idUsuario=@idAluno and SnConcluida='N')) insert into UsuarioAtividadeCurso(IdUsuario, IdModuloBloqueado, Resposta, ComentarioProfessor, SnConcluida, Nota, DataEnvio, IdCurso) values(@idAluno, @idModuloBloqueado, @resposta, null, 'N', null, Getdate(), @idCurso) else update dbo.UsuarioAtividadeCurso set resposta=@resposta, DataEnvio=getdate() where IdCurso=@idCurso and IdModuloBloqueado=@idModuloBloqueado and IdUsuario=@idAluno and SnConcluida='N'", _conexao);
+            _conexao.Open();
+            SqlParameter parametroIdAluno = new SqlParameter
+            {
+                ParameterName = "idAluno",
+                SqlDbType = SqlDbType.Int,
+                Value = idAluno
+            };
+
+            SqlParameter parametroIdCurso = new SqlParameter
+            {
+                ParameterName = "idCurso",
+                SqlDbType = SqlDbType.Int,
+                Value = idCurso
+            };
+            SqlParameter parametroIdModuloBloqueado = new SqlParameter
+            {
+                ParameterName = "idModuloBloqueado",
+                SqlDbType = SqlDbType.Int,
+                Value = idModuloBloqueado
+            };
+            SqlParameter parametroResposta = new SqlParameter
+            {
+                ParameterName = "resposta",
+                SqlDbType = SqlDbType.VarChar,
+                Value = resposta
+            };
+
+            query.Parameters.Add(parametroIdCurso);
+            query.Parameters.Add(parametroIdModuloBloqueado);
+            query.Parameters.Add(parametroResposta);
+            query.Parameters.Add(parametroIdAluno);
+            if (query.ExecuteNonQuery()>0)
+            {
+                status = true;
+            }
+            return status;
         }
 
     }
