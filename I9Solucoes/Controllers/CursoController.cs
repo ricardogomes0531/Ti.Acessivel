@@ -214,5 +214,28 @@ new CursoRepository().RemoverFrequencia(idCurso, idModulo, idAula, idAluno);
             }
             return View(erro);
         }
+
+        [PermissoesFilters]
+        public ActionResult Atividade(int idAtividade)
+        {
+            AtividadeCurso atividade = new AtividadeCurso();
+            UsuarioAtividade usuarioAtividade = new UsuarioAtividade();
+            try
+            {
+                HttpCookie cookieLogin = Request.Cookies["login"];
+                var idAluno = new UsuarioRepository().PesquisarIdDoAlunoPeloEmail(cookieLogin.Value.ToString());
+                atividade = new CursoRepository().GetAtividade(idAtividade);
+                usuarioAtividade = new CursoRepository().GetAtividadeUsuario(atividade.IdCurso, atividade.IdModuloBloqueado, idAluno);
+                ViewBag.usuarioAtividade = usuarioAtividade;
+                            }
+
+            catch (Exception ex)
+            {
+                new LogRepository().Inserir(ex.Message, ex.InnerException.Message);
+            }
+
+            return View(atividade);
+        }
+        
     }
 }
