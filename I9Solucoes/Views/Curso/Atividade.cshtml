@@ -15,12 +15,21 @@
             <b>Comentário do professor: @ViewBag.usuarioAtividade.ComentarioProfessor</b>
             <br />
             <b>Nota: @ViewBag.usuarioAtividade.Nota</b>
-            }
+            <br />
+                if (ViewBag.usuarioAtividade.SnConcluida == "S")
+                {
+                    <b>Status da atividade: Concluída</b>
+                }
+else if (ViewBag.usuarioAtividade.SnConcluida =="N")
+                {
+                    <b>Status da atividade: Ainda não concluída</b>
+                }
+                            }
+
 
             @if (ViewBag.usuarioAtividade.Id == 0 || ViewBag.usuarioAtividade.SnConcluida != "S")
             {
-
-        <form id="formAtividade" name="formAtividade" action="/curso/GravarAtividade" method="post">
+                        <form id="formAtividade" name="formAtividade" action="/curso/GravarAtividade" method="post">
             <input type="hidden" name="idCurso" value="@Model.IdCurso" />
                                 <input type="hidden" name="idModuloBloqueado" value="@Model.IdModuloBloqueado" />
                                 <input type="hidden" name="idAluno" value="@ViewBag.idAluno" />
