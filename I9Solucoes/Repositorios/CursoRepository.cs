@@ -948,10 +948,10 @@ namespace I9Solucoes.Repositorios
             return atividade;
         }
 
-        public bool SalvarAtividade(int idAluno, int idCurso, int idModuloBloqueado, string resposta)
+        public int SalvarAtividade(int idAluno, int idCurso, int idModuloBloqueado, string resposta, int idAtividade)
         {
-            var status = false;
-            SqlCommand query = new SqlCommand("if (not exists(select * from dbo.UsuarioAtividadeCurso where idcurso=@idCurso and idModuloBloqueado=@idModuloBloqueado and idUsuario=@idAluno and SnConcluida='N')) insert into UsuarioAtividadeCurso(IdUsuario, IdModuloBloqueado, Resposta, ComentarioProfessor, SnConcluida, Nota, DataEnvio, IdCurso) values(@idAluno, @idModuloBloqueado, @resposta, null, 'N', null, Getdate(), @idCurso) else update dbo.UsuarioAtividadeCurso set resposta=@resposta, DataEnvio=getdate() where IdCurso=@idCurso and IdModuloBloqueado=@idModuloBloqueado and IdUsuario=@idAluno and SnConcluida='N'", _conexao);
+            int idUsuarioAtividade = 0;
+            SqlCommand query = new SqlCommand("if (not exists(select * from dbo.UsuarioAtividadeCurso where idcurso=@idCurso and idModuloBloqueado=@idModuloBloqueado and idUsuario=@idAluno and IdAtividade=@idAtividade and SnConcluida='N')) begin insert into UsuarioAtividadeCurso(IdUsuario, IdModuloBloqueado, Resposta, ComentarioProfessor, SnConcluida, Nota, DataEnvio, IdCurso, IdAtividade) values(@idAluno, @idModuloBloqueado, @resposta, null, 'N', null, Getdate(), @idCurso, @idAtividade) select scope_identity() end else begin update dbo.UsuarioAtividadeCurso set resposta=@resposta, DataEnvio=getdate() where IdCurso=@idCurso and IdModuloBloqueado=@idModuloBloqueado and IdUsuario=@idAluno and SnConcluida='N' and IdAtividade=@idAtividade select id from dbo.UsuarioAtividadeCurso where IdAtividade=@idAtividade end", _conexao);
             _conexao.Open();
             SqlParameter parametroIdAluno = new SqlParameter
             {
@@ -979,15 +979,22 @@ namespace I9Solucoes.Repositorios
                 Value = resposta
             };
 
+            SqlParameter parametroIdAtividade = new SqlParameter
+            {
+                ParameterName = "idAtividade",
+                SqlDbType = SqlDbType.Int,
+                Value = idAtividade
+            };
+
             query.Parameters.Add(parametroIdCurso);
             query.Parameters.Add(parametroIdModuloBloqueado);
             query.Parameters.Add(parametroResposta);
             query.Parameters.Add(parametroIdAluno);
-            if (query.ExecuteNonQuery()>0)
-            {
-                status = true;
-            }
-            return status;
+            query.Parameters.Add(parametroIdAtividade);
+
+            idUsuarioAtividade = Convert.ToInt32(query.ExecuteScalar());
+
+            return idUsuarioAtividade;
         }
 
     }

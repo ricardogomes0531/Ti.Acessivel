@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using I9Solucoes.Repositorios;
 using I9Solucoes.Models;
 using I9Solucoes.Filtro;
+using System.Configuration;
 
 namespace I9Solucoes.Controllers
 {
@@ -246,8 +247,11 @@ new CursoRepository().RemoverFrequencia(idCurso, idModulo, idAula, idAluno);
                 var idModuloBloqueado = Convert.ToInt32(Request.Form["idModuloBloqueado"]);
                 var idAluno = Convert.ToInt32(Request.Form["idAluno"]);
                 var resposta = Request.Form["resposta"].ToString();
-                var statusAtividade = new CursoRepository().SalvarAtividade(idAluno, idCurso, idModuloBloqueado, resposta);
-                ViewBag.status = statusAtividade;
+                var idAtividade = Convert.ToInt32(Request.Form["idAtividade"]);
+                var idEnvioAtividade = Convert.ToInt32(Request.Form["idEnvioAtividade"]);
+                var idUsuarioAtividade = new CursoRepository().SalvarAtividade(idAluno, idCurso, idModuloBloqueado, resposta, idAtividade);
+                ViewBag.idUsuarioAtividade = idUsuarioAtividade;
+                Mail.Enviar(ConfigurationManager.AppSettings["MailEmailAdministrador"].ToString(), "Envio de Atividade TI Acessível", "A atividade do curso foi enviada para sua correção. Segue link da mesma: http://www.tiacessivel.com.br/curso/corrigirAtividade?idUsuarioAtividade="+idUsuarioAtividade);
             }
             catch(Exception ex)
             {

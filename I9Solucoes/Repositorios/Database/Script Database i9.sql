@@ -59,3 +59,4 @@ create table UsuarioAtividadeCurso(Id int identity primary key not null, IdUsuar
 
 alter table UsuarioAtividadeCurso add Resposta varchar(max), ComentarioProfessor varchar(max), SnConcluida char(1), Nota int, DataEnvio date
 alter table UsuarioAtividadeCurso add IdCurso int not null
+alter table UsuarioAtividadeCurso add IdAtividade int not null

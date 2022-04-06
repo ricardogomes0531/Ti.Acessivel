@@ -29,10 +29,11 @@ else if (ViewBag.usuarioAtividade.SnConcluida =="N")
 
             @if (ViewBag.usuarioAtividade.Id == 0 || ViewBag.usuarioAtividade.SnConcluida != "S")
             {
-                        <form id="formAtividade" name="formAtividade" action="/curso/GravarAtividade" method="post">
+        <form id="formAtividade" name="formAtividade" action="/curso/GravarAtividade" method="post">
             <input type="hidden" name="idCurso" value="@Model.IdCurso" />
-                                <input type="hidden" name="idModuloBloqueado" value="@Model.IdModuloBloqueado" />
-                                <input type="hidden" name="idAluno" value="@ViewBag.idAluno" />
+            <input type="hidden" name="idModuloBloqueado" value="@Model.IdModuloBloqueado" />
+            <input type="hidden" name="idAluno" value="@ViewBag.idAluno" />
+            <input type="text" name="idAtividade" value="@Model.IdAtividade" />"
             <div class="form-group">
                 <label for="resposta">Insira aqui a sua resposta:</label>
                 <input type="text" id="resposta" name="resposta" required>
