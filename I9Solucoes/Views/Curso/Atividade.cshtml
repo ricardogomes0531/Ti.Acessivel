@@ -1,4 +1,4 @@
-﻿@model I9Solucoes.Models.AtividadeCurso
+﻿@model I9Solucoes.RespostaViewModel
 @{
     Layout = "~/Views/Shared/_LayoutEspecifico.cshtml";
 }
@@ -8,42 +8,41 @@
             <h1>Realização de Atividade</h1>
         </div>
         <div class="col-lg-8">
-            <h2>@Model.Titulo</h2>
-            <pre>@Model.Descricao</pre>
+            <h2>@ViewBag.atividade.Titulo</h2>
+            <pre>@ViewBag.atividade.Descricao</pre>
             @if (ViewBag.usuarioAtividade.Id != 0)
             {
-            <b>Comentário do professor: @ViewBag.usuarioAtividade.ComentarioProfessor</b>
-            <br />
-            <b>Nota: @ViewBag.usuarioAtividade.Nota</b>
-            <br />
+                <b>Comentário do professor: @ViewBag.usuarioAtividade.ComentarioProfessor</b>
+                <br />
+                <b>Nota: @ViewBag.usuarioAtividade.Nota</b>
+                <br />
                 if (ViewBag.usuarioAtividade.SnConcluida == "S")
                 {
                     <b>Status da atividade: Concluída</b>
                 }
-else if (ViewBag.usuarioAtividade.SnConcluida =="N")
+                else if (ViewBag.usuarioAtividade.SnConcluida == "N")
                 {
                     <b>Status da atividade: Ainda não concluída</b>
                 }
-                            }
+            }
 
 
             @if (ViewBag.usuarioAtividade.Id == 0 || ViewBag.usuarioAtividade.SnConcluida != "S")
             {
-        <form id="formAtividade" name="formAtividade" action="/curso/GravarAtividade" method="post">
-            <input type="hidden" name="idCurso" value="@Model.IdCurso" />
-            <input type="hidden" name="idModuloBloqueado" value="@Model.IdModuloBloqueado" />
-            <input type="hidden" name="idAluno" value="@ViewBag.idAluno" />
-            <input type="hidden" name="idAtividade" value="@Model.IdAtividade" />"
-            <div class="form-group">
-                <label for="resposta">Insira aqui a sua resposta:</label>
-<textarea name="resposta" id="resposta"></textarea>
+                <form id="formAtividade" name="formAtividade" action="/curso/GravarAtividade" method="post">
+                    <input type="hidden" name="idCurso" value="@ViewBag.atividade.IdCurso" />
+                    <input type="hidden" name="idModuloBloqueado" value="@ViewBag.atividade.IdModuloBloqueado" />
+                    <input type="hidden" name="idAluno" value="@ViewBag.idAluno" />
+                    <input type="hidden" name="idAtividade" value="@ViewBag.atividade.IdAtividade" />
+                    <div class="form-group">
+                        <label for="resposta">Insira aqui a sua resposta:</label>
+@Html.TextAreaFor(m => m.Resposta, new { id = "resposta", rows="200" })
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Enviar">
+                    </div>
+                </form>
 
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Enviar">
-            </div>
-        </form>
-                
             }
         </div>
     </div>

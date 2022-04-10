@@ -157,6 +157,7 @@
     <Compile Include="Repositorios\ProdutoRepositorio.cs" />
     <Compile Include="Repositorios\PublicacaoRepository.cs" />
     <Compile Include="Repositorios\UsuarioRepository.cs" />
+    <Compile Include="RespostaViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />

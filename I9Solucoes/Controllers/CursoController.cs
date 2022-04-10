@@ -229,6 +229,7 @@ new CursoRepository().RemoverFrequencia(idCurso, idModulo, idAula, idAluno);
                         usuarioAtividade = new CursoRepository().GetAtividadeUsuario(atividade.IdCurso, atividade.IdModuloBloqueado, idAluno);
                 ViewBag.idAluno = idAluno;
                 ViewBag.usuarioAtividade = usuarioAtividade;
+ViewBag.atividade = atividade;
                             }
 
             catch (Exception ex)
@@ -236,17 +237,17 @@ new CursoRepository().RemoverFrequencia(idCurso, idModulo, idAula, idAluno);
                 new LogRepository().Inserir(ex.Message, ex.InnerException.Message);
             }
 
-            return View(atividade);
+            return View();
                                 }
  
-        public ActionResult GravarAtividade()
+        public ActionResult GravarAtividade(RespostaViewModel respostaViewModel)
         {
             try
             {
                 var idCurso = Convert.ToInt32(Request.Form["idCurso"]);
                 var idModuloBloqueado = Convert.ToInt32(Request.Form["idModuloBloqueado"]);
                 var idAluno = Convert.ToInt32(Request.Form["idAluno"]);
-                var resposta = Request.Form["resposta"].ToString();
+                var resposta = respostaViewModel.Resposta;
                 var idAtividade = Convert.ToInt32(Request.Form["idAtividade"]);
                 var idEnvioAtividade = Convert.ToInt32(Request.Form["idEnvioAtividade"]);
                 var idUsuarioAtividade = new CursoRepository().SalvarAtividade(idAluno, idCurso, idModuloBloqueado, resposta, idAtividade);
