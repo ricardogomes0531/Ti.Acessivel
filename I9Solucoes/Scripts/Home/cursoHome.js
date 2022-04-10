@@ -26,7 +26,7 @@ var html="<ul>";
                 html += "<li><h3>" + data[dados].Nome + "</h3>";
                 html += "<p>" + data[dados].Descricao + "<br>";
                 html += "<b>Duração: " + data[dados].TempoPrevistoDuracao + " Meses</b><br>";
-                html += "<b>Inicia em: " + converteDataJsonParaJavascript(data[dados].DataInicio) + "</b><br>";
+                html += "<b>Início imediato após a confirmação do pagamento.</b><br>";
                 html += "<a href='/Curso/Detalhe?id="+data[dados].Id+"'>Saber Mais Informações</a>";
 if (data[dados].AceitaMatricula)
 {

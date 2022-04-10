@@ -221,10 +221,10 @@ new CursoRepository().RemoverFrequencia(idCurso, idModulo, idAula, idAluno);
         {
             AtividadeCurso atividade = new AtividadeCurso();
             UsuarioAtividade usuarioAtividade = new UsuarioAtividade();
-            try
+                        try
             {
                 HttpCookie cookieLogin = Request.Cookies["login"];
-                var idAluno = new UsuarioRepository().PesquisarIdDoAlunoPeloEmail(cookieLogin.Value.ToString());
+                                var idAluno = new UsuarioRepository().PesquisarIdDoAlunoPeloEmail(cookieLogin.Value.ToString());
                 atividade = new CursoRepository().GetAtividade(idAtividade);
                         usuarioAtividade = new CursoRepository().GetAtividadeUsuario(atividade.IdCurso, atividade.IdModuloBloqueado, idAluno);
                 ViewBag.idAluno = idAluno;
@@ -237,7 +237,7 @@ new CursoRepository().RemoverFrequencia(idCurso, idModulo, idAula, idAluno);
             }
 
             return View(atividade);
-        }
+                                }
  
         public ActionResult GravarAtividade()
         {

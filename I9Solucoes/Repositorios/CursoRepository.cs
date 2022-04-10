@@ -773,6 +773,8 @@ namespace I9Solucoes.Repositorios
             query.Parameters.Add(parametroLiberado);
             if (query.ExecuteNonQuery() > 0)
                 resultado = true;
+            _conexao.Close();
+            _conexao.Dispose();
 
             return resultado;
         }
@@ -807,6 +809,9 @@ namespace I9Solucoes.Repositorios
                 atividade.IdCurso = dados.GetInt32(dados.GetOrdinal("idcurso"));
                 atividade.IdModuloBloqueado = dados.GetInt32(dados.GetOrdinal("idmodulobloqueado"));
             }
+            _conexao.Close();
+            _conexao.Dispose();
+
             return atividade;
         }
 
@@ -840,13 +845,16 @@ namespace I9Solucoes.Repositorios
                 atividade.IdCurso = dados.GetInt32(dados.GetOrdinal("idcurso"));
                 atividade.IdModuloBloqueado = dados.GetInt32(dados.GetOrdinal("idmodulobloqueado"));
             }
+            _conexao.Close();
+            _conexao.Dispose();
+
             return atividade;
         }
 
         public UsuarioAtividade GetAtividadeUsuario(int idCurso, int idModuloBloqueado, int idUsuario)
         {
             UsuarioAtividade atividade = new UsuarioAtividade();
-            SqlCommand query = new SqlCommand("select * from dbo.UsuarioAtividadeCurso where idcurso=@idcurso and idmodulobloqueado=@idmoduloBloqueado and idusuario=@idUsuario", _conexao);
+            SqlCommand query = new SqlCommand("select * from UsuarioAtividadeCurso where idcurso=@idCurso and idmodulobloqueado=@idModuloBloqueado and idusuario=@idUsuario", _conexao);
             _conexao.Open();
             SqlParameter parametroIdModuloBloqueado = new SqlParameter
             {
@@ -881,6 +889,9 @@ namespace I9Solucoes.Repositorios
                                                 atividade.Resposta = dados.IsDBNull(dados.GetOrdinal("Resposta")) ? null : dados.GetString(dados.GetOrdinal("Resposta"));
                 atividade.SnConcluida = dados.IsDBNull(dados.GetOrdinal("SnConcluida")) ? null : dados.GetString(dados.GetOrdinal("SnConcluida"));
             }
+            _conexao.Close();
+            _conexao.Dispose();
+
             return atividade;
         }
 
@@ -918,6 +929,9 @@ namespace I9Solucoes.Repositorios
                 };
                 atividades.Add(atividade);
             }
+            _conexao.Close();
+            _conexao.Dispose();
+
             return atividades;
         }
 
@@ -945,13 +959,16 @@ namespace I9Solucoes.Repositorios
                 atividade.Titulo = dados.GetString(dados.GetOrdinal("titulo"));
                 atividade.IdModuloBloqueado = dados.GetInt32(dados.GetOrdinal("IdModuloBloqueado"));
             }
+            _conexao.Close();
+            _conexao.Dispose();
+
             return atividade;
         }
 
         public int SalvarAtividade(int idAluno, int idCurso, int idModuloBloqueado, string resposta, int idAtividade)
         {
             int idUsuarioAtividade = 0;
-            SqlCommand query = new SqlCommand("if (not exists(select * from dbo.UsuarioAtividadeCurso where idcurso=@idCurso and idModuloBloqueado=@idModuloBloqueado and idUsuario=@idAluno and IdAtividade=@idAtividade and SnConcluida='N')) begin insert into UsuarioAtividadeCurso(IdUsuario, IdModuloBloqueado, Resposta, ComentarioProfessor, SnConcluida, Nota, DataEnvio, IdCurso, IdAtividade) values(@idAluno, @idModuloBloqueado, @resposta, null, 'N', null, Getdate(), @idCurso, @idAtividade) select scope_identity() end else begin update dbo.UsuarioAtividadeCurso set resposta=@resposta, DataEnvio=getdate() where IdCurso=@idCurso and IdModuloBloqueado=@idModuloBloqueado and IdUsuario=@idAluno and SnConcluida='N' and IdAtividade=@idAtividade select id from dbo.UsuarioAtividadeCurso where IdAtividade=@idAtividade end", _conexao);
+            SqlCommand query = new SqlCommand("if (not exists(select * from UsuarioAtividadeCurso where idcurso=@idCurso and idModuloBloqueado=@idModuloBloqueado and idUsuario=@idAluno and IdAtividade=@idAtividade and SnConcluida='N')) begin insert into UsuarioAtividadeCurso(IdUsuario, IdModuloBloqueado, Resposta, ComentarioProfessor, SnConcluida, Nota, DataEnvio, IdCurso, IdAtividade) values(@idAluno, @idModuloBloqueado, @resposta, null, 'N', null, Getdate(), @idCurso, @idAtividade) select scope_identity() end else begin update UsuarioAtividadeCurso set resposta=@resposta, DataEnvio=getdate() where IdCurso=@idCurso and IdModuloBloqueado=@idModuloBloqueado and IdUsuario=@idAluno and SnConcluida='N' and IdAtividade=@idAtividade select id from UsuarioAtividadeCurso where IdAtividade=@idAtividade end", _conexao);
             _conexao.Open();
             SqlParameter parametroIdAluno = new SqlParameter
             {
@@ -993,6 +1010,9 @@ namespace I9Solucoes.Repositorios
             query.Parameters.Add(parametroIdAtividade);
 
             idUsuarioAtividade = Convert.ToInt32(query.ExecuteScalar());
+
+            _conexao.Close();
+            _conexao.Dispose();
 
             return idUsuarioAtividade;
         }
