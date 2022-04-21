@@ -7,6 +7,7 @@ using I9Solucoes.Repositorios;
 using I9Solucoes.Models;
 using I9Solucoes.Filtro;
 using System.Configuration;
+using I9Solucoes.ViewModels;
 
 namespace I9Solucoes.Controllers
 {
