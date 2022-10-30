@@ -1,0 +1,22 @@
+﻿@{
+	Layout = "~/Views/Shared/_LayoutEspecifico.cshtml";
+}
+<section>
+<div class="row">
+	<div class="col-lg-3">
+		<h1>Alunos Inscritos</h1>
+	</div>
+	<div class="col-lg-8">
+						@foreach(var aluno in ViewBag.alunos)
+            {
+							<strong>@aluno.Nome inscrito no curso de @aluno.NomeCurso na data de @aluno.DataCadastro.Date</strong>
+<br>
+															<a href="/curso/LiberarAluno?id=@aluno.Id&idAssinatura=@aluno.IdAssinatura&idCurso=@aluno.IdCurso">Liberar aluno @aluno.Nome</a>
+<br>
+	            }
+		
+
+	</div>
+</div>
+</section>
+<hr>

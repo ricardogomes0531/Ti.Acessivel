@@ -227,7 +227,7 @@ new CursoRepository().RemoverFrequencia(idCurso, idModulo, idAula, idAluno);
                 HttpCookie cookieLogin = Request.Cookies["login"];
                                 var idAluno = new UsuarioRepository().PesquisarIdDoAlunoPeloEmail(cookieLogin.Value.ToString());
                 atividade = new CursoRepository().GetAtividade(idAtividade);
-                        usuarioAtividade = new CursoRepository().GetAtividadeUsuario(atividade.IdCurso, atividade.IdModuloBloqueado, idAluno);
+                        usuarioAtividade = new CursoRepository().GetAtividadeUsuario(atividade.IdCurso, atividade.IdModuloBloqueado, idAluno, idAtividade);
                 ViewBag.idAluno = idAluno;
                 ViewBag.usuarioAtividade = usuarioAtividade;
 ViewBag.atividade = atividade;
@@ -240,7 +240,30 @@ ViewBag.atividade = atividade;
 
             return View();
                                 }
- 
+
+        public ActionResult ExibirAtividade(int idAtividade, string emailAluno)
+        {
+            AtividadeCurso atividade = new AtividadeCurso();
+            UsuarioAtividade usuarioAtividade = new UsuarioAtividade();
+            try
+            {
+                HttpCookie cookieLogin = Request.Cookies["login"];
+                var idAluno = new UsuarioRepository().PesquisarIdDoAlunoPeloEmail(emailAluno);
+                atividade = new CursoRepository().GetAtividade(idAtividade);
+                usuarioAtividade = new CursoRepository().GetAtividadeUsuario(atividade.IdCurso, atividade.IdModuloBloqueado, idAluno, idAtividade);
+                ViewBag.idAluno = idAluno;
+                ViewBag.usuarioAtividade = usuarioAtividade;
+                ViewBag.atividade = atividade;
+            }
+
+            catch (Exception ex)
+            {
+                new LogRepository().Inserir(ex.Message, ex.InnerException.Message);
+            }
+
+            return View();
+        }
+
         public ActionResult GravarAtividade(RespostaViewModel respostaViewModel)
         {
             try
@@ -253,7 +276,7 @@ ViewBag.atividade = atividade;
                 var idEnvioAtividade = Convert.ToInt32(Request.Form["idEnvioAtividade"]);
                 var idUsuarioAtividade = new CursoRepository().SalvarAtividade(idAluno, idCurso, idModuloBloqueado, resposta, idAtividade);
                 ViewBag.idUsuarioAtividade = idUsuarioAtividade;
-                Mail.Enviar(ConfigurationManager.AppSettings["MailEmailAdministrador"].ToString(), "Envio de Atividade TI Acessível", "A atividade do curso foi enviada para sua correção. Segue link da mesma: http://www.tiacessivel.com.br/curso/corrigirAtividade?idUsuarioAtividade="+idUsuarioAtividade);
+                Mail.Enviar(ConfigurationManager.AppSettings["MailEmailAdministrador"].ToString(), "Envio de Atividade TI Acessível", "A atividade do curso foi enviada para sua correção. Segue link da mesma: http://www.tiacessivel.com.br/curso/corrigiratividade?id="+idUsuarioAtividade);
             }
             catch(Exception ex)
             {
@@ -261,5 +284,59 @@ ViewBag.atividade = atividade;
             }
             return View();
                     }
+
+        public ActionResult CorrigirAtividade(int id)
+        {
+            DetalheAtividade atividade = new DetalheAtividade();
+            atividade = new CursoRepository().BuscarDetalhesAtividade(id);
+
+            return View(atividade);
+        }
+
+        [HttpPost]
+        public ActionResult SalvarCorrecaoAtividade()
+        {
+            try
+            {
+                var idAtividadeCurso = Convert.ToInt32(Request.Form["idAtividadeCurso"].ToString());
+                var idAtividade = Convert.ToInt32(Request.Form["idAtividade"].ToString());
+                var emailUsuario = Request.Form["emailUsuario"].ToString();
+                var snConcluida = Request.Form["snConcluida"].ToString();
+                var comentarioProfessor = Request.Form["comentarioProfessor"].ToString();
+                var nota = Convert.ToInt32(Request.Form["nota"].ToString());
+                var salvarAtividade = new CursoRepository().SalvarCorrecaoAtividade(idAtividadeCurso, comentarioProfessor, snConcluida, nota);
+                Mail.Enviar(emailUsuario, "Realização de Atividade TI Acessível", "Olá, tudo bem? Estou passando poraqui para informar que sua atividade foi corrigida. Você pode saber o resultado e outras informações clicando no link a seguir: http://www.tiacessivel.com.br/curso/exibiratividade?idAtividade="+idAtividade+"&emailAluno="+emailUsuario+" Lembramos que em caso de não aprovação, você pode enviar novamente a atividade que ela será novamente corrigida até que você consiga a aprovação, para ir para o módulo seguinte com toda segurança. Forte abraço do seu professor Ricardo Oliveira!");
+            }
+            catch(Exception ex)
+            {
+                new LogRepository().Inserir(ex.Message, ex.InnerException.Message);
+            }
+            return View();
+        }
+
+        public ActionResult AlunosNaoLiberados()
+        {
+            
+            
+            
+            var alunos = new CursoRepository().ListarAlunosSemLiberacao();
+            ViewBag.alunos = alunos;
+            return View();
+        }
+
+        public ActionResult LiberarAluno(int id, int idCurso, int idAssinatura)
+        {
+            try
+            {
+                var tempoAssinatura = new CursoRepository().BuscarTempoDoCurso(idAssinatura, idCurso);
+                DateTime dataFim = DateTime.Now.AddMonths(tempoAssinatura);
+                var liberarCurso = new CursoRepository().LiberarCursoAlunoInscrito(id, idAssinatura, idCurso, dataFim);
+            }
+            catch(Exception ex)
+            {
+                new LogRepository().Inserir(ex.Message, ex.InnerException.Message);
+            }
+            return View();
+        }
     }
 }

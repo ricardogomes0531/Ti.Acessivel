@@ -12,7 +12,7 @@ namespace I9Solucoes.Models
         public int IdModuloBloqueado { get; set; }
 public string Resposta { get; set; }
         public string ComentarioProfessor { get; set; }
-        public int Nota { get; set; }
+        public int? Nota { get; set; }
         public DateTime DataEnvio { get; set; }
         public string SnConcluida { get; set; }
 

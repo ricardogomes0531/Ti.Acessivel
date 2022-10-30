@@ -9,12 +9,21 @@
 		<div class="col-lg-8">
 			<p class="text-lead">
 Você está prestes a se inscrever no curso.<br>
-Este curso terá o valor total de R$ @ViewBag.valorMonetario, e será pago de forma mensal, todo dia 08.<br>
+Este curso terá o valor total de R$ @ViewBag.valorMonetario, e será pago uma única vez.<br>
 Após sua inscrição no curso, lhe será apresentado um link de pagamento, o qual direcionarar-lhe para uma outra página, onde você deverá escolher como deseja pagar.<br>
-Após o pagamento ser realizado, favor enviar um e-mail ou uma mensagem no Whatsapp com o comprovante de pagamento anexado, que em até 24 horas o curso será liberado para você. Você
-será avisado por e-mail e/ou Whatsapp sobre a liberação do curso.
+Caso o pagamento seja realizado com cartão de crédito e o mesmo seja aprovado, a liberação no curso será imediata e você já poderá iniciar o mesmo.
 <br>
-Vale ressaltar que o curso tem uma data para ser iniciado, que neste caso será dia @ViewBag.dataInicial. Assim sendo, apesar do curso está liberado para você por causa do pagamento, você só conseguirá assisti-lo a partir da data de início.
+Caso você prefira pagar via chave pix, prossiga com a inscrição e depois, realize a transferência do valor do curso para a seguinte chave do tipo número de celular:
+<br>
+<b>81995081051</b>
+<br>
+Envie o comprovante do pagamento para o Whatsapp, que é o mesmo número da chave pix ou para o e-mail 
+<a href="mailto:programadorricardooliveira@gmail.com">programadorricardooliveira@gmail.com</a>
+<br>
+Em até 24 horas seu curso será liberado.
+<br>
+Fique tranquilo(a), que lhe avisaremos quando a liberação for efetuada.
+<br>
 							</p>
 </div>
 		</div>
@@ -28,7 +37,7 @@ Vale ressaltar que o curso tem uma data para ser iniciado, que neste caso será 
 <option value="">Selecione...</option>
 	@foreach (var tempo in ViewBag.tempoCobranca)
 	{
-<option value="@tempo.Id">@tempo.Tempo meses por R$ @tempo.Valor mensal</option>
+<option value="@tempo.Id">@tempo.Tempo meses por R$ @tempo.Valor</option>
 	}
 </select>
 </div>

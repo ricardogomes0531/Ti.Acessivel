@@ -136,6 +136,8 @@
     <Compile Include="Models\CanalYoutube.cs" />
     <Compile Include="Models\Curso.cs" />
     <Compile Include="Models\CursoAluno.cs" />
+    <Compile Include="Models\DadosLiberacaoAluno.cs" />
+    <Compile Include="Models\DetalheAtividade.cs" />
     <Compile Include="Models\Erro.cs" />
     <Compile Include="Models\Fornecedor.cs" />
     <Compile Include="Models\Lead.cs" />
@@ -239,6 +241,11 @@
     <Content Include="Views\Curso\InscricaoSucesso.cshtml" />
     <Content Include="Views\Curso\Atividade.cshtml" />
     <Content Include="Views\Curso\GravarAtividade.cshtml" />
+    <Content Include="Views\Curso\CorrigirAtividade.cshtml" />
+    <Content Include="Views\Curso\SalvarCorrecaoAtividade.cshtml" />
+    <Content Include="Views\Curso\AlunosNaoLiberados.cshtml" />
+    <Content Include="Views\Curso\LiberarAluno.cshtml" />
+    <Content Include="Views\Curso\ExibirAtividade.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

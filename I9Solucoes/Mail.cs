@@ -30,7 +30,7 @@ namespace I9Solucoes
 				smtp.Port = Convert.ToInt32(ConfigurationManager.AppSettings["MailPorta"].ToString());
 				smtp.Host = ConfigurationManager.AppSettings["MailSmtp"].ToString();
 				smtp.EnableSsl = true;
-				smtp.Send(mail);
+						smtp.Send(mail);
 			}
 			catch (Exception ex)
 			{

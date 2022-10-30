@@ -851,10 +851,10 @@ namespace I9Solucoes.Repositorios
             return atividade;
         }
 
-        public UsuarioAtividade GetAtividadeUsuario(int idCurso, int idModuloBloqueado, int idUsuario)
+        public UsuarioAtividade GetAtividadeUsuario(int idCurso, int idModuloBloqueado, int idUsuario, int idAtividade)
         {
             UsuarioAtividade atividade = new UsuarioAtividade();
-            SqlCommand query = new SqlCommand("select * from UsuarioAtividadeCurso where idcurso=@idCurso and idmodulobloqueado=@idModuloBloqueado and idusuario=@idUsuario", _conexao);
+            SqlCommand query = new SqlCommand("select * from UsuarioAtividadeCurso where idcurso=@idCurso and idmodulobloqueado=@idModuloBloqueado and idusuario=@idUsuario and idatividade=@idAtividade", _conexao);
             _conexao.Open();
             SqlParameter parametroIdModuloBloqueado = new SqlParameter
             {
@@ -875,10 +875,17 @@ namespace I9Solucoes.Repositorios
                 Value = idUsuario
             };
 
+            SqlParameter parametroIdAtividade = new SqlParameter
+            {
+                ParameterName = "idAtividade",
+                SqlDbType = SqlDbType.Int,
+                Value = idAtividade
+            };
+
             query.Parameters.Add(parametroIdCurso);
             query.Parameters.Add(parametroIdModuloBloqueado);
             query.Parameters.Add(parametroIdUsuario);
-
+            query.Parameters.Add(parametroIdAtividade);
             SqlDataReader dados = query.ExecuteReader();
             if (dados.Read())
             {
@@ -888,6 +895,10 @@ namespace I9Solucoes.Repositorios
                 atividade.ComentarioProfessor = dados.IsDBNull(dados.GetOrdinal("ComentarioProfessor")) ? null : dados.GetString(dados.GetOrdinal("ComentarioProfessor"));
                                                 atividade.Resposta = dados.IsDBNull(dados.GetOrdinal("Resposta")) ? null : dados.GetString(dados.GetOrdinal("Resposta"));
                 atividade.SnConcluida = dados.IsDBNull(dados.GetOrdinal("SnConcluida")) ? null : dados.GetString(dados.GetOrdinal("SnConcluida"));
+                if (dados.IsDBNull(dados.GetOrdinal("nota")))
+                    atividade.Nota = null;
+                else
+                    atividade.Nota = dados.GetInt32(dados.GetOrdinal("nota"));
             }
             _conexao.Close();
             _conexao.Dispose();
@@ -1016,6 +1027,137 @@ namespace I9Solucoes.Repositorios
 
             return idUsuarioAtividade;
         }
+
+        public DetalheAtividade BuscarDetalhesAtividade(int id)
+        {
+                        DetalheAtividade atividade = new DetalheAtividade();
+            SqlCommand query = new SqlCommand("select u.nome, u.email, ac.idAtividade as idAtividade, ac.descricao, uac.resposta, uac.id, uac.snconcluida from usuarioatividadecurso uac, atividadecurso ac, usuario u where uac.idAtividade=ac.idAtividade and u.id=uac.idUsuario and uac.id=@id", _conexao);
+            _conexao.Open();
+            SqlParameter idParametro = new SqlParameter()
+            {
+                ParameterName = "@id",
+                SqlDbType = SqlDbType.Int,
+                Value = id
+            };
+            query.Parameters.Add(idParametro);
+            SqlDataReader dados = query.ExecuteReader();
+            if (dados.Read())
+            {
+                atividade.Descricao = dados.GetString(dados.GetOrdinal("descricao"));
+                atividade.Resposta = dados.GetString(dados.GetOrdinal("resposta"));
+                atividade.Usuario = dados.GetString(dados.GetOrdinal("nome"));
+                atividade.Id = dados.GetInt32(dados.GetOrdinal("id"));
+                atividade.IdAtividade = dados.GetInt32(dados.GetOrdinal("idAtividade"));
+                atividade.Concluida = dados.GetString(dados.GetOrdinal("snconcluida"));
+                atividade.EmailUsuario = dados.GetString(dados.GetOrdinal("email"));
+            }
+            _conexao.Close();
+            _conexao.Dispose();
+
+            return atividade;
+        }
+
+        public bool SalvarCorrecaoAtividade(int idAtividadeCurso, string comentarioProfessor, string snConcluida, int nota)
+        {
+            bool resultado = false;
+            SqlCommand comando = new SqlCommand("update usuarioatividadecurso set snconcluida=@snConcluida, comentarioprofessor=@comentarioProfessor, nota=@nota where id=@idUsuarioAtividade", _conexao);
+            _conexao.Open();
+            SqlParameter parametroIdUsuarioAtividade = new SqlParameter()
+            {
+                ParameterName = "@idUsuarioAtividade",
+                SqlDbType = SqlDbType.Int,
+                Value = idAtividadeCurso
+            };
+            SqlParameter parametroComentarioProfessor = new SqlParameter()
+            {
+                ParameterName = "@comentarioProfessor",
+                SqlDbType = SqlDbType.VarChar,
+                Value = comentarioProfessor
+            };
+            SqlParameter parametroSnConcluida = new SqlParameter()
+            {
+                ParameterName = "@snConcluida",
+                SqlDbType = SqlDbType.VarChar,
+                                Value = snConcluida
+            };
+            SqlParameter parametroNota = new SqlParameter()
+            {
+                ParameterName = "@nota",
+                SqlDbType = SqlDbType.Int,
+                Value = nota
+            };
+
+            comando.Parameters.Add(parametroIdUsuarioAtividade);
+            comando.Parameters.Add(parametroComentarioProfessor);
+            comando.Parameters.Add(parametroSnConcluida);
+            comando.Parameters.Add(parametroNota);
+            if (comando.ExecuteNonQuery() > 0)
+                resultado = true;
+            _conexao.Close();
+            _conexao.Dispose();
+
+
+            return resultado;
+        }
+
+public List<DadosLiberacaoAluno> ListarAlunosSemLiberacao()
+        {
+            List<DadosLiberacaoAluno> alunos = new List<DadosLiberacaoAluno>();
+            SqlCommand query = new SqlCommand("select u.nome as Nome, ac.DataCadastro as DataCadastro, c.nome as NomeCurso, c.id as IdCurso, ac.id as Id, t.id as IdAssinatura from curso c, aluno_curso ac, usuario u, tempo_cobranca_curso t where c.id=ac.IdCurso and ac.IdAluno=u.id and t.idcurso=ac.idcurso and t.id=ac.idtempoassinatura and ac.snliberado='n'", _conexao);
+            _conexao.Open();
+            SqlDataReader dados = query.ExecuteReader();
+            while(dados.Read())
+            {
+                DadosLiberacaoAluno aluno = new DadosLiberacaoAluno()
+                {
+                                         IdCurso = dados.GetInt32(dados.GetOrdinal("IdCurso")),
+                    Nome = dados.GetString(dados.GetOrdinal("Nome")),
+                    NomeCurso = dados.GetString(dados.GetOrdinal("NomeCurso")),
+                     Id = dados.GetInt32(dados.GetOrdinal("Id")),
+                      IdAssinatura = dados.GetInt32(dados.GetOrdinal("IdAssinatura"))
+                };
+                if (dados.IsDBNull(dados.GetOrdinal("DataCadastro")))
+                {
+                    aluno.DataCadastro = null;
+                }
+                else
+                {
+                    aluno.DataCadastro = dados.GetDateTime(dados.GetOrdinal("DataCadastro"));
+                }
+                alunos.Add(aluno);
+            }
+            return alunos;
+        }
+
+        public bool LiberarCursoAlunoInscrito(int id, int idAssinatura, int idCurso, DateTime dataFim)
+        {
+            bool resultado = false;
+            SqlCommand comando = new SqlCommand("update aluno_curso set snliberado='s', datainicio=getdate(), datafim=@dataFim where id=@id", _conexao);
+            _conexao.Open();
+            SqlParameter parametroId = new SqlParameter()
+            {
+                ParameterName = "@id",
+                SqlDbType = SqlDbType.Int,
+                Value = id
+            };
+            SqlParameter parametroDataFim = new SqlParameter()
+            {
+                ParameterName = "@dataFim",
+                SqlDbType = SqlDbType.Date,
+                Value = dataFim
+            };
+
+            comando.Parameters.Add(parametroId);
+            comando.Parameters.Add(parametroDataFim);
+            if (comando.ExecuteNonQuery() > 0)
+                resultado = true;
+            _conexao.Close();
+            _conexao.Dispose();
+
+
+            return resultado;
+        }
+
 
     }
 }

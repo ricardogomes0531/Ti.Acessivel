@@ -1,0 +1,45 @@
+﻿@model I9Solucoes.Models.DetalheAtividade
+
+<section>
+    <div class="row">
+        <div class="col-lg-3">
+            <h1>Correção de Atividade</h1>
+        </div>
+        <div class="col-lg-8">
+<h2>@Model.Usuario</h2>
+    <p>
+        <pre>
+@Model.Descricao
+<br />
+Resposta do aluno:
+<br />
+@Model.Resposta
+</pre>
+<br />
+    Atividade concluída: @Model.Concluida
+        
+            </p>
+        </div>
+    </div>
+<div class="row">
+    @if (Model.Concluida != "S")
+    {
+    <form action="/curso/SalvarCorrecaoAtividade" method="post">
+        <input type="hidden" name="idAtividadeCurso" value="@Model.Id" />
+        <input type="hidden" name="idAtividade" value="@Model.IdAtividade" />
+        <input type="hidden" name="emailUsuario" value="@Model.EmailUsuario" />
+        <label for="comentario">Comentário do professor</label>
+        <input type="text" name="comentarioProfessor" id="comentarioProfessor">
+        <label for="nota">Nota</label>
+        <input type="number" name="nota" id="nota" min="0" max="10" />
+        <label for="concluida">Atividade concluída</label>
+        <select name="snConcluida" id="snConcluida">
+            <option value="">Selecione...</option>
+            <option value="S">Sim</option>
+            <option value="N">Não</option>
+        </select>
+        <input type="submit" value="Salvar">
+    </form>
+    }
+</div>
+</section>
