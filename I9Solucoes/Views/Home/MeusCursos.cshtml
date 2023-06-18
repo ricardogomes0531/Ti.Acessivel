@@ -24,46 +24,65 @@
 
                         @if (cursos.IdDemonstracao.HasValue)
                         {
-                            <p>teste</p>
+                            if (DateTime.Now.Subtract(cursos.DataCadastro).Days > cursos.QuantidadeDias)
+                            {
+                            <p>
+                                O período demonstrativo do curso encerrou-se. Caso deseje continuar, será necessário efetuar o pagamento, conforme instruções a seguir.
+                                <br />
+
+                                <b>Você irá pagar, conforme a assinatura escolhida, o valor de R$@cursos.Valor</b>
+                                <br>
+                            <p>OBS: Depois que fizer o pagamento, favor enviar o comprovante para o Whatsapp: @ViewBag.envioComprovante e em até 24 horas o curso será liberado no sistema e você será notificado.</p>
+                            <b>OBS: Você será redirecionado para outro site para efetivar o pagamento. Este site será o Mercado Pago, com conexão segura, assim sendo, pode ficar tranquilo(a) com seu pagamento.</b>
+                                                        </p>
                         }
                         else
-                        { 
-                                                    if (cursos.Liberado == "s")
                         {
-                            <b>Liberado: Sim</b>
+                            <p>
+                                Você está noperíodo de demonstração do curso.
+                                <br />
+                                <a href="/Curso/?idCurso=@cursos.IdCurso">Ir para o curso</a>
+                            </p>
+                        }
                         }
                         else
                         {
-                            <b>Liberado: Não</b>
-                            <a href="@cursos.LinkPagamento" target="_blank">Você pode pagar o curso clicando aqui</a>
-                            <br>
-                            <b>Você irá pagar, conforme a assinatura escolhida, o valor de R$@cursos.Valor</b>
-                            <br>
-                        <p>OBS: Depois que fizer o pagamento, favor enviar o comprovante para o Whatsapp: @ViewBag.envioComprovante e em até 24 horas o curso será liberado no sistema e você será notificado.</p>
-                        <b>OBS: Você será redirecionado para outro site para efetivar o pagamento. Este site será o Mercado Pago, com conexão segura, assim sendo, pode ficar tranquilo(a) com seu pagamento.</b>
-                        <br>
-                    }
-                                                    if (DateTime.Now < cursos.DataFim && DateTime.Now > cursos.DataInicio && cursos.Liberado == "s")
-                        {
-                            <a href="/Curso/?idCurso=@cursos.IdCurso">Ir para o curso</a>
+                            if (cursos.Liberado == "s")
+                            {
+                                <b>Liberado: Sim</b>
+                            }
+                            else
+                            {
+                                <b>Liberado: Não</b>
+                                <a href="@cursos.LinkPagamento" target="_blank">Você pode pagar o curso clicando aqui</a>
+                                <br>
+                                <b>Você irá pagar, conforme a assinatura escolhida, o valor de R$@cursos.Valor</b>
+                                <br>
+                                <p>OBS: Depois que fizer o pagamento, favor enviar o comprovante para o Whatsapp: @ViewBag.envioComprovante e em até 24 horas o curso será liberado no sistema e você será notificado.</p>
+                                <b>OBS: Você será redirecionado para outro site para efetivar o pagamento. Este site será o Mercado Pago, com conexão segura, assim sendo, pode ficar tranquilo(a) com seu pagamento.</b>
+                                <br>
+                            }
+                            if (DateTime.Now < cursos.DataFim && DateTime.Now > cursos.DataInicio && cursos.Liberado == "s")
+                            {
+                                <a href="/Curso/?idCurso=@cursos.IdCurso">Ir para o curso</a>
+                            }
+                            if (DateTime.Now < cursos.DataInicio)
+                            {
+                                <p class="text-lead">O curso ainda não iniciou. A data de início é @cursos.DataInicio.ToString("dd/mm/yyyy")</p>
+                            }
+                            if (DateTime.Now > cursos.DataFim)
+                            {
+                                <p class="text-lead">O curso encerrou em @cursos.DataFim.ToString("dd/MM/yyyy")</p>
+                            }
                         }
-                        if (DateTime.Now < cursos.DataInicio)
-                        {
-                            <p class="text-lead">O curso ainda não iniciou. A data de início é @cursos.DataInicio.ToString("dd/mm/yyyy")</p>
-                        }
-                        if (DateTime.Now > cursos.DataFim)
-                        {
-                            <p class="text-lead">O curso encerrou em @cursos.DataFim.ToString("dd/MM/yyyy")</p>
-                        }
-}
                         </p>
                     }
                 }
-            
+
 
                 else
                 {
-                    <p c        lass="text-lead">Você ainda não está inscrito em nenhum curso.</p>
+                    <p c lass="text-lead">Você ainda não está inscrito em nenhum curso.</p>
                     <a href="/curso/todososcursos">Ver Todos os cursos disponíveis</a>
                 }
         </div>
