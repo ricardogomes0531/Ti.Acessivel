@@ -181,7 +181,7 @@ namespace I9Solucoes.Repositorios
         public List<CursoAluno> ListarCursosDoAluno(string email)
         {
             List<CursoAluno> cursos = new List<CursoAluno>();
-            SqlCommand query = new SqlCommand("select c.Nome, ac.SnLiberado, ac.DataCadastro, ac.IdCurso, ac.DataInicio, ac.Datafim, t.linkpagamento, t.valor from curso c, aluno_curso ac, usuario u, tempo_cobranca_curso t where c.id=ac.IdCurso and ac.IdAluno=u.id and t.idcurso=ac.idcurso and t.id=ac.idtempoassinatura and u.email=@email", _conexao);
+            SqlCommand query = new SqlCommand("select c.Nome, ac.SnLiberado, ac.DataCadastro, ac.IdCurso, ac.DataInicio, ac.Datafim, t.linkpagamento, t.valor, ac.IdDemonstracao, (select QuantidadeDias from Demonstracao d where d.Id=ac.IdDemonstracao) as QuantidadeDias from curso c, aluno_curso ac, usuario u, tempo_cobranca_curso t where c.id=ac.IdCurso and ac.IdAluno=u.id and t.idcurso=ac.idcurso and t.id=ac.idtempoassinatura and u.email=@email", _conexao);
             _conexao.Open();
             SqlParameter parametroEmail = new SqlParameter()
             {
@@ -202,8 +202,18 @@ namespace I9Solucoes.Repositorios
                     DataFim = dados.GetDateTime(dados.GetOrdinal("DataFim")),
                     DataInicio = dados.GetDateTime(dados.GetOrdinal("DataInicio")),
                     LinkPagamento = dados.GetString(dados.GetOrdinal("LinkPagamento")),
-                    Valor = dados.GetDecimal(dados.GetOrdinal("Valor"))
-                };
+                    Valor = dados.GetDecimal(dados.GetOrdinal("Valor")),
+                                     };
+                if (dados.IsDBNull(dados.GetOrdinal("IdDemonstracao")))
+                    curso.IdDemonstracao = null;
+                else
+                    curso.IdDemonstracao = dados.GetInt32(dados.GetOrdinal("IdDemonstracao"));
+
+                if (dados.IsDBNull(dados.GetOrdinal("QuantidadeDias")))
+                    curso.QuantidadeDias = null;
+                else
+                    curso.QuantidadeDias = dados.GetInt32(dados.GetOrdinal("QuantidadeDias"));
+
                 cursos.Add(curso);
             };
             _conexao.Close();
