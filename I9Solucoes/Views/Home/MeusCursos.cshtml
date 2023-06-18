@@ -21,7 +21,14 @@
                         <br>
                         <b>Data de encerramento: @cursos.DataFim.ToString("dd/MM/yyyy")</b>
                         <br />
-                        @if (cursos.Liberado == "s")
+
+                        @if (cursos.IdDemonstracao.HasValue)
+                        {
+                            <p>teste</p>
+                        }
+                        else
+                        { 
+                                                    if (cursos.Liberado == "s")
                         {
                             <b>Liberado: Sim</b>
                         }
@@ -36,25 +43,27 @@
                         <b>OBS: Você será redirecionado para outro site para efetivar o pagamento. Este site será o Mercado Pago, com conexão segura, assim sendo, pode ficar tranquilo(a) com seu pagamento.</b>
                         <br>
                     }
-                        @if (DateTime.Now < cursos.DataFim && DateTime.Now > cursos.DataInicio && cursos.Liberado == "s")
+                                                    if (DateTime.Now < cursos.DataFim && DateTime.Now > cursos.DataInicio && cursos.Liberado == "s")
                         {
                             <a href="/Curso/?idCurso=@cursos.IdCurso">Ir para o curso</a>
                         }
-                        @if (DateTime.Now < cursos.DataInicio)
+                        if (DateTime.Now < cursos.DataInicio)
                         {
                             <p class="text-lead">O curso ainda não iniciou. A data de início é @cursos.DataInicio.ToString("dd/mm/yyyy")</p>
                         }
-                        @if (DateTime.Now > cursos.DataFim)
+                        if (DateTime.Now > cursos.DataFim)
                         {
                             <p class="text-lead">O curso encerrou em @cursos.DataFim.ToString("dd/MM/yyyy")</p>
                         }
-
+}
                         </p>
                     }
                 }
+            
+
                 else
                 {
-                    <p class="text-lead">Você ainda não está inscrito em nenhum curso.</p>
+                    <p c        lass="text-lead">Você ainda não está inscrito em nenhum curso.</p>
                     <a href="/curso/todososcursos">Ver Todos os cursos disponíveis</a>
                 }
         </div>
