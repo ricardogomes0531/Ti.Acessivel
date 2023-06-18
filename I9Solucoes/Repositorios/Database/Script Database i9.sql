@@ -60,3 +60,6 @@ create table UsuarioAtividadeCurso(Id int identity primary key not null, IdUsuar
 alter table UsuarioAtividadeCurso add Resposta varchar(max), ComentarioProfessor varchar(max), SnConcluida char(1), Nota int, DataEnvio date
 alter table UsuarioAtividadeCurso add IdCurso int not null
 alter table UsuarioAtividadeCurso add IdAtividade int not null
+	IF OBJECT_ID('Demonstracao') is null
+create table Demonstracao(Id int identity primary key, Nome varchar(50) not null, IdCurso int not null, Codigo varchar(20) not null, SnAtivo char(1) not null)
+alter table aluno_curso add IdCodigoDemonstracao int

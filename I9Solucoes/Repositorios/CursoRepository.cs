@@ -487,10 +487,10 @@ namespace I9Solucoes.Repositorios
             return tempoCobranca;
         }
 
-        public bool InserirAlunoNoCurso(int idCurso, int idAluno, DateTime dataFim, DateTime dataInicio, int idTempoAssinatura)
+        public bool InserirAlunoNoCurso(int idCurso, int idAluno, DateTime dataFim, DateTime dataInicio, int idTempoAssinatura, int? idDemonstracao=null)
         {
             bool alunoInserido = false;
-            SqlCommand query = new SqlCommand("insert into aluno_curso(idcurso, idaluno, snliberado, datacadastro, datafim, datainicio, idtempoassinatura) values(@idCurso, @idAluno,@snLiberado, @dataCadastro, @dataFim, @dataInicio, @idTempoAssinatura)", _conexao);
+            SqlCommand query = new SqlCommand("insert into aluno_curso(idcurso, idaluno, snliberado, datacadastro, datafim, datainicio, idtempoassinatura, idDemonstracao) values(@idCurso, @idAluno,@snLiberado, @dataCadastro, @dataFim, @dataInicio, @idTempoAssinatura, @idDemonstracao)", _conexao);
             _conexao.Open();
 
             SqlParameter parametroIdCurso = new SqlParameter()
@@ -500,6 +500,19 @@ namespace I9Solucoes.Repositorios
                 Value = idCurso
             };
 
+            SqlParameter parametroIdDemonstracao = new SqlParameter()
+            {
+                ParameterName = "@idDemonstracao",
+                SqlDbType = SqlDbType.Int,
+                            };
+            if (idDemonstracao.HasValue)
+            {
+                parametroIdDemonstracao.Value = idDemonstracao.Value;
+                    }
+            else
+            {
+                parametroIdDemonstracao.Value = Convert.DBNull; 
+            }
             SqlParameter parametroIdAluno = new SqlParameter()
             {
                 ParameterName = "@idAluno",
@@ -547,6 +560,7 @@ namespace I9Solucoes.Repositorios
             query.Parameters.Add(parametroDataFim);
             query.Parameters.Add(parametroDataInicio);
             query.Parameters.Add(parametroIdTempoAssinatura);
+            query.Parameters.Add(parametroIdDemonstracao);
             if (query.ExecuteNonQuery() > 0)
                 alunoInserido = true;
 

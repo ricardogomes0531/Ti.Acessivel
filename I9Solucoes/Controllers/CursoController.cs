@@ -107,6 +107,8 @@ new CursoRepository().RemoverFrequencia(idCurso, idModulo, idAula, idAluno);
                     ViewBag.valorMonetario = curso.ValorMonetario;
                     List<TempoCobrancaCurso> tempoCobranca = new CursoRepository().BuscarTempoCobranca(idCurso);
                     ViewBag.tempoCobranca = tempoCobranca.ToList();
+                DemonstracaoCursoModel demonstracao = new DemonstracaoCursoRepository().Buscar(curso.Id);
+                ViewBag.demonstracao = demonstracao;
                 }
                 catch (Exception ex)
                 {
@@ -138,7 +140,60 @@ new CursoRepository().RemoverFrequencia(idCurso, idModulo, idAula, idAluno);
                 }
                 else
                 {
-                    bool alunoInserido = new CursoRepository().InserirAlunoNoCurso(idCurso, idAluno, dataFim,dataInicio,idTempoAssinatura);
+                    bool alunoInserido = new CursoRepository().InserirAlunoNoCurso(idCurso, idAluno, dataFim,dataInicio,idTempoAssinatura, null);
+                    if (alunoInserido)
+                    {
+                        HttpCookie idCursoCookie = new HttpCookie("idCursoCookie");
+                        idCursoCookie.Value = idCurso.ToString();
+                        Response.Cookies.Add(idCursoCookie);
+                        erro.Mensagem = "Inscrição realizada com sucesso!";
+                        erro.Detalhe = null;
+                        erro.ExisteErro = false;
+                    }
+                    else
+                    {
+                        erro.ExisteErro = true;
+                        erro.Detalhe = null;
+                        erro.Mensagem = "Erro ao realizar inscrição no curso.";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                erro.Mensagem = "Erro ao realizar cadastro " + ex.Message;
+                erro.Detalhe = ex.Message;
+                erro.ExisteErro = true;
+                new LogRepository().Inserir(ex.Message, ex.InnerException.Message);
+            }
+
+            return Json(erro, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult InscreverNoCursoDemonstrativo()
+        {
+                        var idCurso = Convert.ToInt32(Request.Form["idCurso"]);
+                        var idDemonstracao = Convert.ToInt32(Request.Form["codigoDemonstracao"]);
+            HttpCookie cookieLogin = Request.Cookies["login"];
+            var idAluno = new UsuarioRepository().PesquisarIdDoAlunoPeloEmail(cookieLogin.Value.ToString());
+            var idTempoAssinatura=Convert.ToInt32(Request.Form["tempoAssinatura"]);
+            int tempo= new CursoRepository().BuscarTempoDoCurso(idTempoAssinatura, idCurso);
+            //DateTime dataInicio = new CursoRepository().Buscar(idCurso).DataInicio;
+            DateTime dataInicio = DateTime.Now.Date;
+            var dataFim=dataInicio.AddMonths(tempo);
+            Erro erro = new Erro();
+            try
+            {
+                bool existeAluno = new CursoRepository().ChecarSeAlunoJaEstarInscritoNoCurso(idAluno, idCurso);
+                if (existeAluno)
+                {
+                    erro.ExisteErro = true;
+                    erro.Detalhe = null;
+                    erro.Mensagem = "Você já está inscrito neste curso.";
+                }
+                else
+                {
+                    bool alunoInserido = new CursoRepository().InserirAlunoNoCurso(idCurso, idAluno, dataFim,dataInicio,idTempoAssinatura, idDemonstracao);
                     if (alunoInserido)
                     {
                         HttpCookie idCursoCookie = new HttpCookie("idCursoCookie");

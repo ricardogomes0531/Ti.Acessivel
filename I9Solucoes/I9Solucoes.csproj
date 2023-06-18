@@ -137,6 +137,7 @@
     <Compile Include="Models\Curso.cs" />
     <Compile Include="Models\CursoAluno.cs" />
     <Compile Include="Models\DadosLiberacaoAluno.cs" />
+    <Compile Include="Models\DemonstracaoCursoModel.cs" />
     <Compile Include="Models\DetalheAtividade.cs" />
     <Compile Include="Models\Erro.cs" />
     <Compile Include="Models\Fornecedor.cs" />
@@ -153,6 +154,7 @@
     <Compile Include="Repositorios\ClienteRepository.cs" />
     <Compile Include="Repositorios\CursoRepository.cs" />
     <Compile Include="Repositorios\DataBase.cs" />
+    <Compile Include="Repositorios\DemonstracaoCursoRepository.cs" />
     <Compile Include="Repositorios\FornecedorRepository.cs" />
     <Compile Include="Repositorios\LeadRepository.cs" />
     <Compile Include="Repositorios\LogRepository.cs" />

@@ -41,6 +41,25 @@ Fique tranquilo(a), que lhe avisaremos quando a liberação for efetuada.
 	}
 </select>
 </div>
+
+        @if (ViewBag.demonstracao.Codigo != null)
+        {
+            <h2>Atenção! este curso possui código promossional</h2>
+<p>Você pode experimentar este curso gratis por @ViewBag.demonstracao.QuantidadeDias dias.
+<br />
+                Caso você deseje continuar o curso depois do término do prazo gratuítos, é só realizar o pagamento, para continuar fazendo o mesmo.
+<br>
+Para ter acesso ao curso gratuitamente pelo prazo determinado, basta clicar no botão Realizar inscrição e testar.
+<br>
+Caso deseje já realizar a inscrição e fazer o pagamento, basta clicar no botão realizar inscrição.
+</p>
+            <input type="hidden" id="codigoDemonstracao" name="codigoDemonstracao" value="@ViewBag.demonstracao.Id">
+<div class="form-group">
+<input id="botaoInscreverGratis" type="button" value="Realizar inscrição e testar" onClick="inscreverGratis()">
+</div>
+
+}
+
 <div class="form-group">
 <input id="botaoInscrever" type="button" value="Realizar inscrição" onClick="inscrever()">
 </div>
