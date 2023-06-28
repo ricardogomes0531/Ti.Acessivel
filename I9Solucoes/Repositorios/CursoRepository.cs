@@ -744,7 +744,7 @@ namespace I9Solucoes.Repositorios
         public bool LiberarCursoParaAluno(int idCurso, int idAluno)
         {
             bool resultado = false;
-            SqlCommand comando = new SqlCommand("update dbo.aluno_curso set snliberado='s' where idcurso=@idcurso and idaluno=@idaluno", _conexao);
+            SqlCommand comando = new SqlCommand("update dbo.aluno_curso set snliberado='s', iddemonstracao=null where idcurso=@idcurso and idaluno=@idaluno", _conexao);
             _conexao.Open();
             SqlParameter parametroIdCurso = new SqlParameter()
             {
@@ -1156,7 +1156,7 @@ public List<DadosLiberacaoAluno> ListarAlunosSemLiberacao()
         public bool LiberarCursoAlunoInscrito(int id, int idAssinatura, int idCurso, DateTime dataFim)
         {
             bool resultado = false;
-            SqlCommand comando = new SqlCommand("update aluno_curso set snliberado='s', datainicio=getdate(), datafim=@dataFim where id=@id", _conexao);
+            SqlCommand comando = new SqlCommand("update aluno_curso set snliberado='s', datainicio=getdate(), datafim=@dataFim, iddemonstracao=null where id=@id", _conexao);
             _conexao.Open();
             SqlParameter parametroId = new SqlParameter()
             {
