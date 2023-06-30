@@ -222,6 +222,55 @@ namespace I9Solucoes.Repositorios
             return cursos;
         }
 
+        public CursoAluno BuscarCursoDoAluno(int id, string email)
+        {
+            CursoAluno curso = new CursoAluno();
+            SqlCommand query = new SqlCommand("select c.Nome, ac.SnLiberado, ac.DataCadastro, ac.IdCurso, ac.DataInicio, ac.Datafim, t.linkpagamento, t.valor, ac.IdDemonstracao, (select QuantidadeDias from Demonstracao d where d.Id=ac.IdDemonstracao) as QuantidadeDias from curso c, aluno_curso ac, usuario u, tempo_cobranca_curso t where c.id=ac.IdCurso and ac.IdAluno=u.id and t.idcurso=ac.idcurso and t.id=ac.idtempoassinatura and ac.idcurso=@idCurso and u.email=@email", _conexao);
+            _conexao.Open();
+            SqlParameter parametroEmail = new SqlParameter()
+            {
+                ParameterName = "@email",
+                SqlDbType = SqlDbType.VarChar,
+                Value = email
+            };
+
+            SqlParameter parametroIdCurso = new SqlParameter()
+            {
+                ParameterName = "@idCurso",
+                SqlDbType = SqlDbType.Int,
+                Value = id
+            };
+
+            query.Parameters.Add(parametroEmail);
+            query.Parameters.Add(parametroIdCurso);
+            SqlDataReader dados = query.ExecuteReader();
+            if (dados.Read())
+            {
+                curso.DataCadastro = dados.GetDateTime(dados.GetOrdinal("DataCadastro"));
+                curso.IdCurso = dados.GetInt32(dados.GetOrdinal("IdCurso"));
+                    curso.Liberado = dados.GetString(dados.GetOrdinal("SnLiberado"));
+                curso.NomeCurso = dados.GetString(dados.GetOrdinal("Nome"));
+                curso.DataFim = dados.GetDateTime(dados.GetOrdinal("DataFim"));
+                curso.DataInicio = dados.GetDateTime(dados.GetOrdinal("DataInicio"));
+                curso.LinkPagamento = dados.GetString(dados.GetOrdinal("LinkPagamento"));
+                curso.Valor = dados.GetDecimal(dados.GetOrdinal("Valor"));
+                
+                if (dados.IsDBNull(dados.GetOrdinal("IdDemonstracao")))
+                    curso.IdDemonstracao = null;
+                else
+                    curso.IdDemonstracao = dados.GetInt32(dados.GetOrdinal("IdDemonstracao"));
+
+                if (dados.IsDBNull(dados.GetOrdinal("QuantidadeDias")))
+                    curso.QuantidadeDias = null;
+                else
+                    curso.QuantidadeDias = dados.GetInt32(dados.GetOrdinal("QuantidadeDias"));
+            };
+            _conexao.Close();
+            _conexao.Dispose();
+
+            return curso;
+        }
+
         public List<Modulos> ListarModulosDoCurso(int idCurso)
         {
             List<Modulos> modulos = new List<Modulos>();

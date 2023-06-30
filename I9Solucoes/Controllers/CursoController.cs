@@ -17,6 +17,9 @@ namespace I9Solucoes.Controllers
 [PermissoesFilters]
         public ActionResult Index(int idCurso)
         {
+            HttpCookie cookieLogin = Request.Cookies["login"];
+            var curso = new CursoRepository().BuscarCursoDoAluno(idCurso, cookieLogin.Value.ToString());
+            ViewBag.curso = curso;
             List<Modulos> modulos = new List<Modulos>();
             modulos = new CursoRepository().ListarModulosDoCurso(idCurso);
 

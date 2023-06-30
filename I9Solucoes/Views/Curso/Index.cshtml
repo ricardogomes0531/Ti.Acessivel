@@ -2,26 +2,64 @@
 @{
 	Layout = "~/Views/Shared/_LayoutEspecifico.cshtml";
 }
-<section>
+<h1>Curso</h1>
+
+                        @if (ViewBag.curso.IdDemonstracao != null)
+                        {
+                            if (DateTime.Now.Subtract(ViewBag.curso.DataCadastro).Days > ViewBag.curso.QuantidadeDias)
+                            {
+                            <p>
+                                O período demonstrativo do curso encerrou-se. Caso deseje continuar, será necessário efetuar o pagamento, conforme instruções a seguir.
+                                <br />
+
+                                <b>Você irá pagar, conforme a assinatura escolhida, o valor de R$@ViewBag.curso.Valor</b>
+                                <br>
+                            
+                            <b>OBS: Você será redirecionado para outro site para efetivar o pagamento. Este site será o Mercado Pago, com conexão segura, assim sendo, pode ficar tranquilo(a) com seu pagamento.</b>
+                                <a href="@ViewBag.curso.LinkPagamento" target="_blank">Você pode pagar o curso clicando aqui</a>
+                                                        </p>
+<hr>
+
+                                return;
+
+                            }
+                        }
+                        else
+                            if (DateTime.Now > ViewBag.curso.DataFim)
+                        {
+                                <p class="text-lead">O curso encerrou em @ViewBag.curso.DataFim.ToString("dd/MM/yyyy")</p>
+<hr>
+
+                            return;
+                        }
+                        else
+                        if (ViewBag.curso.Liberado == "n")
+            {
+<p>
+    O curso não está liberado para você. Caso ainda não tenha realizado o pagamento,
+    <a href="@ViewBag.curso.LinkPagamento" target="_blank">Clique aqui para realizar o pagamento</a>
+</p>
+                            return;
+                        }
 <div class="row">
 	<div class="col-lg-3">
-		<h1>Modulos do Curso</h1>
+		<h2>Modulos do Curso</h2>
 	</div>
 	<div class="col-lg-8">
 		@if (Model.Count() > 0)
-		{
+        {
 			<ul class="list-group"></ul>
-			foreach (var modulos in Model.ToList())
-			{
+                        foreach (var modulos in Model.ToList())
+            {
 				<li class="list-group-item"><a class="btn-link" href="/Curso/ListarAulas/?idModulo=@modulos.Id&idCurso=@modulos.IdCurso">@modulos.Nome</a></li>
-								}
-		}
+            }
+        }
 			</ul>
-		@if (Model.Count()==0)
-		{
+		@if (Model.Count() == 0)
+        {
 			<p class="text-lead">Não existem módulos para mostrar neste curso</p>
-		}
+        }
 	</div>
 </div>
-</section>
+
 <hr>
