@@ -63,7 +63,15 @@ namespace I9Solucoes.Controllers
             {
             string conteudoAula = new CursoRepository().MostrarConteudoDaAula(idCurso, idModulo, idAula);
             string tituloAula = new CursoRepository().MostrarTituloDaAula(idCurso, idModulo, idAula);
-            ViewBag.conteudoAula = conteudoAula;
+                if (conteudoAula.IndexOf("https://www.youtube.com/embed") > 0)
+                {
+                    ViewBag.conteudoAula = new HtmlString(conteudoAula);
+                }
+                else
+                {
+                    ViewBag.conteudoAula = conteudoAula;
+                }
+
             ViewBag.tituloAula = tituloAula;
             HttpCookie cookieLogin = Request.Cookies["login"];
             var idAluno = new UsuarioRepository().PesquisarIdDoAlunoPeloEmail(cookieLogin.Value.ToString());
